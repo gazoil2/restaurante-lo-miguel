@@ -12,7 +12,7 @@ generator client {
 }
 
 model Address {
-  id           Int    @id
+  id           Int    @id @default(autoincrement())
   province     String
   city         String
   street       String
@@ -35,25 +35,25 @@ model User {
 }
 
 model TableState {
-  id    Int     @id
+  id    Int     @id @default(autoincrement())
   state String
   table Table[]
 }
 
 model Table {
-  id           Int        @id
+  id           Int        @id @default(autoincrement())
   mesaState    TableState @relation(fields: [tableStateId], references: [id])
   tableStateId Int
 }
 
 model FoodCategory {
-  id       Int    @id
+  id       Int    @id @default(autoincrement())
   category String
   dishes   Dish[]
 }
 
 model Dish {
-  id               Int          @id
+  id               Int          @id @default(autoincrement())
   name             String
   desc             String
   price            Float
@@ -64,14 +64,14 @@ model Dish {
 }
 
 model OrderState {
-  id   Int    @id
+  id   Int    @id @default(autoincrement())
   name String
 
   orderheaders OrderHeader[]
 }
 
 model OrderHeader {
-  id           Int        @id
+  id           Int        @id @default(autoincrement())
   orderUser    User       @relation(fields: [userId], references: [id])
   userId       Int
   orderState   OrderState @relation(fields: [orderStateId], references: [id])
@@ -87,7 +87,7 @@ model OrderHeader {
 }
 
 model OrderDetail {
-  id            Int         @id
+  id            Int         @id @default(autoincrement())
   orderHeader   OrderHeader @relation(fields: [orderHeaderId], references: [id])
   orderHeaderId Int
 
