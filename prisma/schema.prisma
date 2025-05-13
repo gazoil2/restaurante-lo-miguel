@@ -44,6 +44,7 @@ model Table {
   id           Int        @id @default(autoincrement())
   mesaState    TableState @relation(fields: [tableStateId], references: [id])
   tableStateId Int
+  size Int
 }
 
 model FoodCategory {
@@ -65,7 +66,7 @@ model Dish {
 
 model OrderState {
   id   Int    @id @default(autoincrement())
-  name String
+  state String
 
   orderheaders OrderHeader[]
 }
@@ -80,8 +81,8 @@ model OrderHeader {
   headerAddress  Address @relation(fields: [orderAddressId], references: [id])
   orderAddressId Int
 
-  total    Float
-  discount Float
+  total    Float?
+  discount Float  @default(0.0)
 
   orderDetails OrderDetail[]
 }

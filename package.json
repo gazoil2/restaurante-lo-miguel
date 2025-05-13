@@ -2,9 +2,10 @@
   "name": "restaurante-lo-miguel",
   "version": "1.0.0",
   "description": " Una aplicacion de restaurante que permite la reserva de mesas, los pedidos de clientes y la administracion desde una cuenta de administrador.",
-  "main": "index.js",
+  "main": "./api/index.js",
   "scripts": {
-    "test": "dev"
+    "dev": "tsx ./api/index.ts",
+    "seed": "tsx prisma/seed.ts"
   },
   "repository": {
     "type": "git",
@@ -17,12 +18,18 @@
   },
   "homepage": "https://github.com/gazoil2/restaurante-lo-miguel#readme",
   "devDependencies": {
+    "@types/express": "^5.0.1",
     "@types/node": "^22.15.17",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "prisma": "^6.7.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@prisma/client": "^6.7.0"
+    "@prisma/client": "^6.7.0",
+    "express": "^5.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }
