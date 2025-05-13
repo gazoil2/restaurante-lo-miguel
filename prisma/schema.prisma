@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+model Address {
+  id           Int    @id
+  province     String
+  city         String
+  street       String
+  number       Int
+  otherDetails String
+
+  user        User[]
+  orderHeader OrderHeader[]
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  name        String
+  mail        String        @unique
+  phoneNumber String
+  password    String
+  userAddress Address       @relation(fields: [addressId], references: [id])
+  addressId   Int
+  Orders      OrderHeader[]
+}
+
+model TableState {
+  id    Int     @id
+  state String
+  table Table[]
+}
+
+model Table {
+  id           Int        @id
+  mesaState    TableState @relation(fields: [tableStateId], references: [id])
+  tableStateId Int
+}
+
+model FoodCategory {
+  id       Int    @id
+  category String
+  dishes   Dish[]
+}
+
+model Dish {
+  id               Int          @id
+  name             String
+  desc             String
+  price            Float
+  menuFoodCategory FoodCategory @relation(fields: [categoryId], references: [id])
+  categoryId       Int
+
+  orderDetail OrderDetail[]
+}
+
+model OrderState {
+  id   Int    @id
+  name String
+
+  orderheaders OrderHeader[]
+}
+
+model OrderHeader {
+  id           Int        @id
+  orderUser    User       @relation(fields: [userId], references: [id])
+  userId       Int
+  orderState   OrderState @relation(fields: [orderStateId], references: [id])
+  orderStateId Int
+
+  headerAddress  Address @relation(fields: [orderAddressId], references: [id])
+  orderAddressId Int
+
+  total    Float
+  discount Float
+
+  orderDetails OrderDetail[]
+}
+
+model OrderDetail {
+  id            Int         @id
+  orderHeader   OrderHeader @relation(fields: [orderHeaderId], references: [id])
+  orderHeaderId Int
+
+  detailDish Dish  @relation(fields: [dishId], references: [id])
+  dishId     Int
+  amount     Float
+
+  total    Float
+  discount Float
+}
