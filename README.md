@@ -31,15 +31,13 @@ cd restaurante-lo-miguel`
 
 ## Información sobre la API
 
-/tables
+/tables (GET)
 
-/dishes
+/dishes (GET) (POST (Solo Admin))
 
-/orders (Solo Admin)
+/orders (GET) (POST) (Solo Admin)
 
-/users (Solo Admin)
-
-/
+/users (GET) (Solo Admin)
 
 ## Integrantes
 
