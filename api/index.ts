@@ -2,6 +2,7 @@ import express from 'express'
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { tableRouter } from "./routers/tableRouter";
+import { dishRouter } from './routers/dishRouter';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +24,7 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
-
+app.use('/dishes', dishRouter)
 app.use('/tables', tableRouter)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.get('/health', (req, res) => {

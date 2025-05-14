@@ -23,6 +23,12 @@ model Address {
   orderHeader OrderHeader[]
 }
 
+model Admin {
+  id Int @id
+  adminUser User @relation(fields: [idUser], references: [id])
+  idUser Int
+}
+
 model User {
   id          Int           @id @default(autoincrement())
   name        String
@@ -32,12 +38,19 @@ model User {
   userAddress Address       @relation(fields: [addressId], references: [id])
   addressId   Int
   Orders      OrderHeader[]
+  Admins Admin[]
 }
 
 model TableState {
   id    Int     @id @default(autoincrement())
-  state String
+  state String @unique
   table Table[]
+}
+
+model DishState {
+  id Int  @id @default(autoincrement())
+  name String @unique
+  dishes Dish[]
 }
 
 model Table {
@@ -49,7 +62,7 @@ model Table {
 
 model FoodCategory {
   id       Int    @id @default(autoincrement())
-  category String
+  category String @unique
   dishes   Dish[]
 }
 
@@ -60,13 +73,14 @@ model Dish {
   price            Float
   menuFoodCategory FoodCategory @relation(fields: [categoryId], references: [id])
   categoryId       Int
-
+  dishState DishState @relation(fields: [dishStateId], references: [id])
+  dishStateId Int
   orderDetail OrderDetail[]
 }
 
 model OrderState {
   id   Int    @id @default(autoincrement())
-  state String
+  state String @unique
 
   orderheaders OrderHeader[]
 }

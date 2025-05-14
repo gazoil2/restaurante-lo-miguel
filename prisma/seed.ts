@@ -36,6 +36,15 @@ async function main() {
     }
   })
 
+  const dishState = await prisma.dishState.upsert({
+    where: {id : 1},
+    update: {},
+    create: {
+      id: 1,
+      name: "Stockeado"
+    }
+  })
+
   const orderState = await prisma.orderState.upsert({
     where: {id : 1},
     update: {},
@@ -61,7 +70,7 @@ async function main() {
       desc : "Pescado",
       price : 200.00,
       categoryId: foodCategory.id,
-
+      dishStateId: dishState.id,
     }
   })
 
