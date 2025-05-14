@@ -23,8 +23,29 @@ async function main() {
       name: 'Juan Perez',
       mail: 'juan@example.com',
       phoneNumber: '1122334455',
-      password: 'hashed_password',
+      password: '123456',
       addressId: address.id,
+    },
+  })
+
+  const user2 = await prisma.user.upsert({
+    where: { id : 2 },
+    update: {},
+    create: {
+      name: 'Admin',
+      mail: 'Admin@Admin.com',
+      phoneNumber: 'Admin',
+      password: 'Admin',
+      addressId: address.id,
+    },
+  })
+
+  const admin = await prisma.admin.upsert({
+    where: {id: 1},
+    update: {},
+    create: {
+      id:2,
+      idUser: user2.id
     },
   })
 

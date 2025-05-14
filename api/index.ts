@@ -24,7 +24,7 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
-app.use('/dishes', dishRouter)
+app.use('/menu', dishRouter)
 app.use('/tables', tableRouter)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.get('/health', (req, res) => {

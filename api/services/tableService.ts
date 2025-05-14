@@ -14,6 +14,18 @@ export const getAvailableTables  = async() => {
     })
 }
 
+export const getAllTables = async() => {
+  return await $db.table.findMany({
+    select: {
+      id: true,
+      size:true,
+      mesaState: {
+        select: {state: true},
+      }
+    }
+  })
+}
+
 
 export const updateStateTable = async (id: number, tableStateId: number) => {
     return await $db.table.update({

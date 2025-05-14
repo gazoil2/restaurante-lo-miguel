@@ -1,5 +1,6 @@
 import express from 'express';
-import { getAvailableTables, updateStateTable } from '../services/tableService';
+import { Request, Response } from 'express';
+import { getAllTables, getAvailableTables, updateStateTable } from '../services/tableService';
 import { table } from 'console';
 import { checkUserIsAdmin } from '../services/authService';
 import { updateDishState } from '../services/dishService';
@@ -39,15 +40,34 @@ export const tableRouter = express.Router();
  *                 error:
  *                   type: string
  */
-tableRouter.get("/", async (req,res) => {
+
+tableRouter.get("/", async (req: Request, res: Response) => {
     try {
         const availableTables = await getAvailableTables();
-        res.status(200)
-        res.json({"Tables: ": availableTables})
-    } catch (error){
-        res.status(500).json({error: error});
+        const idUserHeader = req.headers["iduser"];
+        const idUser = idUserHeader ? parseInt(idUserHeader as string) : undefined;
+        console.log(idUser)
+        if (idUser) {
+            const isAdmin = await checkUserIsAdmin(idUser);
+            if (isAdmin) {
+                const allTables = await getAllTables();
+                res.status(200).json({ Tables: allTables });
+                return;
+            } else {
+                res.status(403).json({ error: "Usuario no tiene permisos para ver todas las mesas." });
+                return;
+            }
+        }
+        
+        res.status(200).json({ Tables: availableTables });
+        return;
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error interno del servidor" });
+        return;
     }
-})
+});
+  
 
 tableRouter.get("/update-table", async(req: request,res) => {
     try{
