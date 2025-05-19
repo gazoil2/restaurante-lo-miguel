@@ -66,11 +66,20 @@ async function main() {
     }
   })
 
-  const orderState = await prisma.orderState.upsert({
+  const preparada = await prisma.orderState.upsert({
     where: {id : 1},
     update: {},
     create: {
       state: "Preparado"
+    }
+
+  })
+
+  const enPreparacion = await prisma.orderState.upsert({
+    where: {id : 2},
+    update: {},
+    create: {
+      state: "En preparación"
     }
 
   })
@@ -112,7 +121,7 @@ async function main() {
     update: {},
     create: {
       userId: user.id,
-      orderStateId: orderState.id,
+      orderStateId: enPreparacion.id,
       orderAddressId: address.id,
       total: 400.00,
       discount: 0,
