@@ -1,10 +1,8 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { getAllTables, getAvailableTables, updateStateTable } from '../services/tableService';
-import { table } from 'console';
 import { checkUserIsAdmin } from '../services/authService';
-import { updateDishState } from '../services/dishService';
-import { request } from '../utils/types';
+import { isRequestUserAdmin } from '../utils/checkAdmin';
 export const tableRouter = express.Router();
 
 /**
@@ -44,21 +42,6 @@ export const tableRouter = express.Router();
 tableRouter.get("/", async (req: Request, res: Response) => {
     try {
         const availableTables = await getAvailableTables();
-        const idUserHeader = req.headers["iduser"];
-        const idUser = idUserHeader ? parseInt(idUserHeader as string) : undefined;
-        console.log(idUser)
-        if (idUser) {
-            const isAdmin = await checkUserIsAdmin(idUser);
-            if (isAdmin) {
-                const allTables = await getAllTables();
-                res.status(200).json({ Tables: allTables });
-                return;
-            } else {
-                res.status(403).json({ error: "Usuario no tiene permisos para ver todas las mesas." });
-                return;
-            }
-        }
-        
         res.status(200).json({ Tables: availableTables });
         return;
     } catch (error) {
@@ -67,24 +50,38 @@ tableRouter.get("/", async (req: Request, res: Response) => {
         return;
     }
 });
+
+tableRouter.get("/admin", async (req: Request, res: Response) => {
+    try {
+        const isAdmin = await isRequestUserAdmin(req,res)
+        if (!isAdmin) return;
+
+        const allTables = await getAllTables();
+        res.status(200).json({ Tables: allTables });
+        return;
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error interno del servidor" });
+        return;
+    }
+});
   
 
-tableRouter.get("/update-table", async(req: request,res) => {
+tableRouter.get("/update", async(req: Request,res: Response) => {
     try{
-        const idUser = req.body.idUser
+        const isAdmin = await isRequestUserAdmin(req,res)
+        if (!isAdmin) return;
+
         const tableId = req.body.tableId
         const tableStateId = req.body.tableStateId 
-        if (!idUser|| !tableId || !tableStateId){
+        if (!tableId || !tableStateId){
             res.status(401).json("Formato de request equivocado.")
             return;
         }
-        const isAdmin = await checkUserIsAdmin(idUser)
-        if (isAdmin){
-            await updateStateTable(tableId, tableStateId)
-            res.status(200).json("Actualizado correctamente.")
-        } else {
-            res.status(403).json("Usuario no tiene los permisos para realizar esta accion.")
-        }
+
+        await updateStateTable(tableId, tableStateId)
+        res.status(200).json("Actualizado correctamente.")
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Internal server error" });
