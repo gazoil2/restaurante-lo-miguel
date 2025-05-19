@@ -29,8 +29,20 @@ app.use('/menu', dishRouter)
 app.use('/tables', tableRouter)
 app.use('/orders', orderRouter)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.get('/', (req,res) => {
+  try {
+    res.json(
+      {routes: [
+        {method: "GET", route: "/menu"}, 
+        {method: "GET", route: "/tables"},
+        {method: "GET", route: "/api-docs"},
+      ]})
+  } catch (error) {
+    console.log(error)
+  }
+})
 app.get('/health', (req, res) => {
-    try {
+    try { 
       res.json({ status: 'healthy' });
     } catch (error) {
       console.log(error)
