@@ -9,6 +9,7 @@ export async function isRequestUserAdmin (req: Request, res: Response) : Promise
         res.status(401).json({error: "Formato de request equivocado. Falta idUser."})
         return false;
     };
+
     const isAdmin = await checkUserIsAdmin(idUser);
     if (!isAdmin) {                
         res.status(403).json({ error: "Usuario no tiene permisos para ver todas las mesas." });
