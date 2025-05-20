@@ -26,6 +26,22 @@ export const getAllTables = async() => {
   })
 }
 
+export const postTable = async (size: number) => {
+  return await $db.table.create({
+    data: {
+      size : size,
+      tableStateId: 1,
+    },
+    select: {
+      id: true,
+      size: true,
+      mesaState: {
+        select: { state: true },
+      },
+    },
+  });
+};
+
 
 export const updateStateTable = async (id: number, tableStateId: number) => {
     return await $db.table.update({

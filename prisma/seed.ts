@@ -1,9 +1,9 @@
-import { Dish, PrismaClient } from '../generated/prisma'
+import { PrismaClient } from '../generated/prisma'
 const prisma = new PrismaClient()
 
 async function main() {
   // Create Address
-  const address = await prisma.address.upsert({
+  const direccionTorcuato = await prisma.address.upsert({
     where: { id: 1 },
     update: {},
     create: {
@@ -16,7 +16,7 @@ async function main() {
   })
 
   // Create User
-  const user = await prisma.user.upsert({
+  const juan = await prisma.user.upsert({
     where: { id : 1 },
     update: {},
     create: {
@@ -24,11 +24,11 @@ async function main() {
       mail: 'juan@example.com',
       phoneNumber: '1122334455',
       password: '123456',
-      addressId: address.id,
+      addressId: direccionTorcuato.id,
     },
   })
 
-  const user2 = await prisma.user.upsert({
+  const adminUser = await prisma.user.upsert({
     where: { id : 2 },
     update: {},
     create: {
@@ -36,7 +36,7 @@ async function main() {
       mail: 'Admin@Admin.com',
       phoneNumber: 'Admin',
       password: 'Admin',
-      addressId: address.id,
+      addressId: direccionTorcuato.id,
     },
   })
 
@@ -45,11 +45,11 @@ async function main() {
     update: {},
     create: {
       id:2,
-      idUser: user2.id
+      idUser: adminUser.id
     },
   })
 
-  const foodCategory = await prisma.foodCategory.upsert({
+  const entrada = await prisma.foodCategory.upsert({
     where: {id : 1},
     update: {},
     create: {
@@ -57,12 +57,46 @@ async function main() {
     }
   })
 
-  const dishState = await prisma.dishState.upsert({
+  const postre = await prisma.foodCategory.upsert({
+    where: {id : 2},
+    update: {},
+    create: {
+      category: "Postre"
+    }
+  })
+
+  const platoPrincipal = await prisma.foodCategory.upsert({
+    where: {id : 3},
+    update: {},
+    create: {
+      category: "Plato Principal"
+    }
+  })
+
+  const stockeado = await prisma.dishState.upsert({
     where: {id : 1},
     update: {},
     create: {
       id: 1,
       name: "Stockeado"
+    }
+  })
+
+  const agotado = await prisma.dishState.upsert({
+    where: {id : 2},
+    update: {},
+    create: {
+      id: 1,
+      name: "Agotado"
+    }
+  })
+
+  const descontinuado = await prisma.dishState.upsert({
+    where: {id : 3},
+    update: {},
+    create: {
+      id: 1,
+      name: "Descontinuado"
     }
   })
 
@@ -90,33 +124,83 @@ async function main() {
       state: "Enviado"
     }
   })
+
+  const finalizada = await prisma.orderState.upsert({
+    where: {id : 3},
+    update: {},
+    create: {
+      state: "Finalizada"
+    }
+
+  })
   
-  const tableState = await prisma.tableState.upsert({
+  const libre = await prisma.tableState.upsert({
     where: {id : 1},
     update: {},
     create: {
       state: "Libre",
     }
   })
+  const ocupada = await prisma.tableState.upsert({
+    where: {id : 2},
+    update: {},
+    create: {
+      state: "Ocupada",
+    }
+  })
+
+  const reservada = await prisma.tableState.upsert({
+    where: {id : 3},
+    update: {},
+    create: {
+      state: "Reservada",
+    }
+  })
   
-  const dish = await prisma.dish.upsert({
+  const rabas = await prisma.dish.upsert({
     where: {id : 1},
     update: {},
     create: {
       name : "Rabas",
-      desc : "Pescado",
+      desc : "Exquisitas rabas",
       price : 200.00,
-      categoryId: foodCategory.id,
-      dishStateId: dishState.id,
+      categoryId: entrada.id,
+      dishStateId: stockeado.id,
     }
   })
 
+  const pollo = await prisma.dish.upsert({
+    where: {id : 2},
+    update: {},
+    create: {
+      name : "Pollo A la Sal",
+      desc : "El mejor pollo del mundo",
+      price : 200.00,
+      categoryId: platoPrincipal.id,
+      dishStateId: agotado.id,
+    }
+  })
+
+  const tiramisu = await prisma.dish.upsert({
+    where: {id : 3},
+    update: {},
+    create: {
+      name : "Pollo",
+      desc : "Para el bajon",
+      price : 200.00,
+      categoryId: postre.id,
+      dishStateId: descontinuado.id,
+    }
+  })
+
+
+  const tableStates = [libre.id, ocupada.id, reservada.id]
   const tables = await Promise.all(
-    Array.from({ length: 15 }).map(() =>
+    Array.from({ length: 15 }).map((_, i) =>
       prisma.table.create({
         data: {
-          tableStateId: tableState.id,
           size: 4,
+          tableStateId: tableStates[i % 3], 
         },
       })
     )
@@ -127,9 +211,9 @@ async function main() {
     where: {id : 1},
     update: {},
     create: {
-      userId: user.id,
+      userId: juan.id,
       orderStateId: enPreparacion.id,
-      orderAddressId: address.id,
+      orderAddressId: direccionTorcuato.id,
       total: 400.00,
       discount: 0,
     }
@@ -141,7 +225,7 @@ async function main() {
     update: {},
     create: {
       orderHeaderId: orderHeader.id,
-      dishId: dish.id,
+      dishId: rabas.id,
       amount: 2,
       total: 400.00,
       discount: 0.0,

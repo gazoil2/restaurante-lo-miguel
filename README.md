@@ -29,6 +29,11 @@ cd restaurante-lo-miguel`
 
 `npm run dev`
 
+### Comandos Utiles
+
+`npx prisma migrate reset`
+Borra toda la informacion de la base de datos.
+
 ## Información sobre la API
 
 /tables (GET)
@@ -54,6 +59,7 @@ cd restaurante-lo-miguel`
     - [4. Aplicar los cambios del esquema a la base de datos](#4-aplicar-los-cambios-del-esquema-a-la-base-de-datos)
     - [5. Seedear la base de datos (opcional)](#5-seedear-la-base-de-datos-opcional)
     - [6. Inicializar el servidor](#6-inicializar-el-servidor)
+    - [Comandos Utiles](#comandos-utiles)
   - [Información sobre la API](#información-sobre-la-api)
   - [Integrantes](#integrantes)
   - [Contenido](#contenido)

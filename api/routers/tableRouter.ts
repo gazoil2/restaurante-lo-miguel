@@ -1,53 +1,17 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { getAllTables, getAvailableTables, updateStateTable } from '../services/tableService';
-import { checkUserIsAdmin } from '../services/authService';
+import { getAllTables, getAvailableTables, postTable, updateStateTable } from '../services/tableService';
 import { isRequestUserAdmin } from '../utils/checkAdmin';
+import { error } from 'console';
 export const tableRouter = express.Router();
-
-/**
- * @swagger
- * /tables:
- *   get:
- *     summary: Obtiene todas las mesas disponibles
- *     description: Este endpoint devuelve todas las mesas que están en estado "Libre".
- *     responses:
- *       200:
- *         description: Lista de mesas disponibles
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 Tables:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: integer
- *                       Size:
- *                         type: integer
- *       500:
- *         description: Error en el servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- */
 
 tableRouter.get("/", async (req: Request, res: Response) => {
     try {
         const availableTables = await getAvailableTables();
         res.status(200).json({ Tables: availableTables });
-        return;
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error interno del servidor" });
-        return;
     }
 });
 
@@ -58,17 +22,32 @@ tableRouter.get("/admin", async (req: Request, res: Response) => {
 
         const allTables = await getAllTables();
         res.status(200).json({ Tables: allTables });
-        return;
 
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error interno del servidor" });
-        return;
     }
 });
   
+tableRouter.post("/post", async(req: Request,res: Response) => {
+    try{
+        const isAdmin = await isRequestUserAdmin(req,res)
+        if (!isAdmin) return;
 
-tableRouter.get("/update", async(req: Request,res: Response) => {
+        const tableSize = req.body.size
+        if (!tableSize){
+            res.status(401).json({error: "Formato de request equivocado."})
+            return;
+        }
+        const newTable = await postTable(tableSize)
+        res.status(200).json({"Created Table": newTable})
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
+tableRouter.patch("/update", async(req: Request,res: Response) => {
     try{
         const isAdmin = await isRequestUserAdmin(req,res)
         if (!isAdmin) return;
