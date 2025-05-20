@@ -3,15 +3,17 @@ import { Request, Response } from 'express';
 import { getAllTables, getAvailableTables, postTable, updateStateTable } from '../services/tableService';
 import { isRequestUserAdmin } from '../utils/checkAdmin';
 import { error } from 'console';
+import { sendJSONResponse } from '../utils/response';
+import { send } from 'process';
 export const tableRouter = express.Router();
 
 tableRouter.get("/", async (req: Request, res: Response) => {
     try {
         const availableTables = await getAvailableTables();
-        res.status(200).json({ Tables: availableTables });
+        sendJSONResponse(res, 200, { Tables: availableTables })
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error interno del servidor" });
+        sendJSONResponse(res, 500)
     }
 });
 
@@ -21,14 +23,15 @@ tableRouter.get("/admin", async (req: Request, res: Response) => {
         if (!isAdmin) return;
 
         const allTables = await getAllTables();
-        res.status(200).json({ Tables: allTables });
+
+        sendJSONResponse(res, 200, { Tables: allTables })
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error interno del servidor" });
+        sendJSONResponse(res, 500)
     }
 });
-  
+
 tableRouter.post("/post", async(req: Request,res: Response) => {
     try{
         const isAdmin = await isRequestUserAdmin(req,res)
@@ -36,14 +39,14 @@ tableRouter.post("/post", async(req: Request,res: Response) => {
 
         const tableSize = req.body.size
         if (!tableSize){
-            res.status(401).json({error: "Formato de request equivocado."})
+            sendJSONResponse(res, 401, "Formato de post equivocado.")
             return;
         }
         const newTable = await postTable(tableSize)
-        res.status(200).json({"Created Table": newTable})
+        sendJSONResponse(res, 200, { "Created Table": newTable })
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Internal server error" });
+        sendJSONResponse(res, 500)
     }
 })
 
@@ -55,14 +58,14 @@ tableRouter.patch("/update", async(req: Request,res: Response) => {
         const tableId = req.body.tableId
         const tableStateId = req.body.tableStateId 
         if (!tableId || !tableStateId){
-            res.status(401).json("Formato de request equivocado.")
+            sendJSONResponse(res, 401, "Formato de update equivocado.")
             return;
         }
 
         await updateStateTable(tableId, tableStateId)
-        res.status(200).json("Actualizado correctamente.")
+        sendJSONResponse(res, 200, {"table": "updated"})
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Internal server error" });
+        sendJSONResponse(res, 500)
     }
 })

@@ -2,7 +2,7 @@ import express from "express";
 import { addOrderDetail, getAllOrders, getOrderById, getOrderDetails, getOrderState, postOrder, updateOrderState } from "../services/orderService";
 import { Request, Response} from 'express';
 import { isRequestUserAdmin } from "../utils/checkAdmin"
-import { parse } from "path";
+import { sendJSONResponse } from '../utils/response';
 export const orderRouter = express.Router();
 
 orderRouter.get('/', async (req: Request, res: Response) => {
@@ -12,11 +12,11 @@ orderRouter.get('/', async (req: Request, res: Response) => {
 
         const orders = await getAllOrders();
 
-        res.status(200).json({Orders: orders});
+        sendJSONResponse(res, 200, {orders})
     } catch(e) {
         console.log("Error: ", e);
 
-        res.status(500).json({error: "Internal server error"});
+        sendJSONResponse(res, 500)
     }
 })
 
@@ -29,13 +29,10 @@ orderRouter.get('/:id', async (req, res) => {
         const details = await getOrderDetails(parseInt(id));
         const orderheader = await getOrderById(parseInt(id));
 
-        res.status(200).json({
-            header: orderheader,
-            details: details
-        })
+        sendJSONResponse(res, 200, {header: orderheader, details: details})
     } catch(e) {
         console.log(e);
-        res.status(500).json({error: "Internal server error"})
+        sendJSONResponse(res, 500);
     }
 })
 
@@ -43,17 +40,15 @@ orderRouter.post('/post', async (req, res) => {
     try {
         const isAdmin = await isRequestUserAdmin(req, res);
         if (!isAdmin) return;
-        
+
         const { user, address } = req.body
 
         const newOrder = await postOrder(parseInt(user), parseInt(address));
 
-        res.status(200).json({
-            newOrder
-        })
+        sendJSONResponse(res, 200, {newOrder})
     } catch(err) {
+        sendJSONResponse(res, 500)
         console.log(err);
-        res.status(500).json({error: "Internal server error"});
     }
 })
 
@@ -65,13 +60,11 @@ orderRouter.post('/add-detail', async (req, res) => {
         const { orderHeaderId, dishId, amount } = req.body
         const newOrderDetail = await addOrderDetail(parseInt(orderHeaderId), parseInt(dishId), parseInt(amount));
 
-        res.status(200).json({
-            newOrderDetail
-        })
+        sendJSONResponse(res, 200, {newOrderDetail})
 
     } catch(err) {
+        sendJSONResponse(res, 500)
         console.log(err)
-
     }
 })
 
@@ -80,13 +73,13 @@ orderRouter.get('/state/:id', async(req, res) => {
         const {id} = req.params
         const order = await getOrderState(parseInt(id));
 
-        res.status(200).json({
+        sendJSONResponse(res, 200, {
             orderId: id,
             state: order?.orderState.state,
         })
     } catch(err) {
         console.log(err)
-        res.status(500).json({error: "Internal server error"})
+        sendJSONResponse(res, 500)
     }
 })
 
@@ -96,11 +89,9 @@ orderRouter.patch('/update', async(req, res) => {
 
         console.log(id, state);
         const updatedOrder = await updateOrderState(parseInt(id), parseInt(state));
-        res.status(200).json({
-            updatedOrder
-        })
+        sendJSONResponse(res, 200, {updatedOrder})
     } catch(err) {
+        sendJSONResponse(res, 500)
         console.log(err);
-        res.status(500).json({error: "Internal server error"})
     }
 })

@@ -2,6 +2,8 @@ import express from 'express';
 import { Request, Response } from 'express';
 import { getUserById, getAllUser, postUser } from '../services/userService';
 import { error } from 'console';
+import { sendJSONResponse } from '../utils/response';
+import { send } from 'process';
 export const userRouter = express.Router();
 
 
@@ -10,22 +12,22 @@ userRouter.get('/admin/:id', async (req, res) => {
         const { id } = req.params
         const user = await getUserById(parseInt(id));
         if (!user){
-            res.status(404).json({error: "User not Found"})
+            sendJSONResponse(res, 404, "User not found")
         }
-        res.status(200).json({user: user})
+        sendJSONResponse(res, 200, {user})
     } catch(err) {
         console.log(err)
-        res.status(500).json({error: "Internal server error."})
+        sendJSONResponse(res, 500)
     }
 })
 
 userRouter.get('/admin', async (req, res) => {
     try {
         const users = await getAllUser();
-        res.status(200).json({users: users})
+        sendJSONResponse(res, 200, {users})
     } catch(err) {
         console.log(err)
-        res.status(500).json({error: "Internal server error."})
+        sendJSONResponse(res, 500)
     }
 })
 
@@ -33,12 +35,12 @@ userRouter.post('/post', async (req, res) => {
     try {
         const { name , mail, phoneNumber, password, addressId }  = req.body
         if (!name || !mail || !phoneNumber || !password || !addressId){
-            res.status(401).json({error: "Bad Request"})
+            sendJSONResponse(res, 401, "Bad Request")
         }
         const newUser = await postUser(name,mail,phoneNumber,password, addressId);
-        res.status(200).json({newUser: newUser})
+        sendJSONResponse(res, 200, {newUser: newUser})
     } catch(err) {
         console.log(err)
-        res.status(500).json({error: "Internal server error."})
+        sendJSONResponse(res, 500)
     }
 })
