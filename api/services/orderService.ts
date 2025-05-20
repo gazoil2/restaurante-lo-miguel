@@ -34,6 +34,22 @@ export const getOrderById = async (id: number) => {
     })
 }
 
+export const getOrderState = async(id: number) => {
+    return await $db.orderHeader.findUnique({
+        select: {
+            orderState: {
+                select: {
+                    state: true,
+                }
+            }
+        },
+
+        where: {
+            id: id,
+        }
+    })
+}
+
 export const getOrderDetails = async (id: number) => {
     return await $db.orderDetail.findMany({
         select: {

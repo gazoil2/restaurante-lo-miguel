@@ -1,5 +1,5 @@
 import express from "express";
-import { addOrderDetail, getAllOrders, getOrderById, getOrderDetails, postOrder, updateOrderState } from "../services/orderService";
+import { addOrderDetail, getAllOrders, getOrderById, getOrderDetails, getOrderState, postOrder, updateOrderState } from "../services/orderService";
 import { Request, Response} from 'express';
 import { isRequestUserAdmin } from "../utils/checkAdmin"
 import { parse } from "path";
@@ -72,6 +72,21 @@ orderRouter.post('/add-detail', async (req, res) => {
     } catch(err) {
         console.log(err)
 
+    }
+})
+
+orderRouter.get('/state/:id', async(req, res) => {
+    try {
+        const {id} = req.params
+        const order = await getOrderState(parseInt(id));
+
+        res.status(200).json({
+            orderId: id,
+            state: order?.orderState.state,
+        })
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({error: "Internal server error"})
     }
 })
 
