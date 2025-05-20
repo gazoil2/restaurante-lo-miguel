@@ -44,7 +44,7 @@ async function main() {
     where: {id: 1},
     update: {},
     create: {
-      id:2,
+      id: 2,
       idUser: adminUser.id
     },
   })

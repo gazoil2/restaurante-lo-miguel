@@ -14,28 +14,29 @@ app.use(express.json());
 
 const swaggerOptions = {
     definition: {
-      openapi: '3.0.0', 
+      openapi: '3.0.0',
       info: {
         title: 'API del Restaurante Lo Miguel',
         version: '2.0.0',
         description: 'Una API para gestionar mesas, pedidos y usuarios en el restaurante.',
       },
     },
-    apis: ['./api/routers/*.ts'], 
+    apis: ['./api/routers/*.ts'],
   };
 
+// todo lo del swagger
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use('/menu', dishRouter)
 app.use('/tables', tableRouter)
 app.use('/orders', orderRouter)
 app.use('/users',userRouter)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.get('/', (req,res) => {
   try {
     res.json(
       {routes: [
-        {method: "GET", route: "/menu"}, 
+        {method: "GET", route: "/menu"},
         {method: "GET", route: "/tables"},
         {method: "GET", route: "/api-docs"},
       ]})
@@ -44,7 +45,7 @@ app.get('/', (req,res) => {
   }
 })
 app.get('/health', (req, res) => {
-    try { 
+    try {
       res.json({ status: 'healthy' });
     } catch (error) {
       console.log(error)

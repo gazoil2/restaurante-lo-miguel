@@ -11,7 +11,7 @@ export async function isRequestUserAdmin (req: Request, res: Response) : Promise
     };
 
     const isAdmin = await checkUserIsAdmin(idUser);
-    if (!isAdmin) {                
+    if (!isAdmin) {
         res.status(403).json({ error: "Usuario no tiene permisos para ver todas las mesas." });
         return false;
     }
