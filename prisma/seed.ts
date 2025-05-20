@@ -7,11 +7,11 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      province: 'alice@prisma.io',
-      city: 'Alice',
-      street: 'Torcuato',
-      number: 21,
-      otherDetails: 'Departamento 5B'
+      province: 'Buenos Aires',
+      city: 'Avellaneda',
+      street: 'Sarmiento',
+      number: 97,
+      otherDetails: 'Departamento 12 D'
     },
   })
 
@@ -70,7 +70,7 @@ async function main() {
     where: {id : 1},
     update: {},
     create: {
-      state: "Preparado"
+      state: "Pendiente"
     }
 
   })
@@ -79,9 +79,16 @@ async function main() {
     where: {id : 2},
     update: {},
     create: {
-      state: "En preparación"
+      state: "En cocina"
     }
+  })
 
+  const enviado = await prisma.orderState.upsert({
+    where: {id : 3},
+    update: {},
+    create: {
+      state: "Enviado"
+    }
   })
   
   const tableState = await prisma.tableState.upsert({

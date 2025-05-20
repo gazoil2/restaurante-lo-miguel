@@ -95,7 +95,7 @@ model OrderHeader {
   headerAddress  Address @relation(fields: [orderAddressId], references: [id])
   orderAddressId Int
 
-  total    Float?
+  total    Float  @default(0.0)
   discount Float  @default(0.0)
 
   orderDetails OrderDetail[]
