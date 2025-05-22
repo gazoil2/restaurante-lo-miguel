@@ -38,7 +38,7 @@ dishRouter.post('/post', async (req : Request, res: Response) => {
         const categoryId : number | undefined = req.body.categoryId
         const dishStateId : number | undefined = req.body.dishStateId
         if (!name || !desc || !price || !categoryId || !dishStateId){
-            sendJSONResponse(res, 401, "Formato de request equivocado.")
+            sendJSONResponse(res, 400, "Formato de request equivocado.")
             return;
         }
         const newDish = await postDish(name, desc, price, categoryId, dishStateId);
@@ -57,7 +57,7 @@ dishRouter.patch('/update', async (req : Request, res: Response) => {
         const dishId = req.body.dishId
         const dishStateId = req.body.dishStateId 
         if (!dishId || !dishStateId){
-            sendJSONResponse(res, 401, "Formato de request equivocado.")
+            sendJSONResponse(res, 400, "Formato de request equivocado.")
             return;
         }
 

@@ -1,1 +1,773 @@
-c
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "API del Menú",
+    "version": "1.0",
+    "description": "API para la gestión del menú de un restaurante"
+  },
+  "servers": [{ "url": "https://api.server.test/v1" }],
+  "paths": {
+    "/menu": {
+      "get": {
+        "summary": "Obtener el menú completo",
+        "description": "Recupera el menú completo disponible para todos los usuarios. Devuelve un array con todos los items del menú que estén stockeados.",
+        "operationId": "obtenerMenu",
+        "tags": ["Menú"],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Estado de la operación",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "menu": {
+                          "type": "array",
+                          "description": "Lista de items del menú",
+                          "items": {
+                            "$ref": "#/components/schemas/ItemMenu"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/menu/admin": {
+      "get": {
+        "description": "Recupera el menú con la información del estado del plato.",
+        "summary": "Obtener el menú con información adicional",
+        "parameters": [],
+        "operationId": "obtenerMenuAdmin",
+        "tags": ["Menú"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": true,
+                      "data": {
+                        "menu": [
+                          {
+                            "id": "1",
+                            "name": "Pizza Skibidi",
+                            "desc": "Pizza con extra skibidi",
+                            "price": 15000,
+                            "menuFoodCategory": {
+                              "Category": "Principal"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mala request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Formato de request equivocado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rechazado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Usuario no tiene permisos suficientes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/menu/post": {
+      "post": {
+        "summary": "Crear un nuevo plato en el menú",
+        "description": "Añade un nuevo item al menú con su nombre, descripción, precio, categoría y estado.",
+        "tags": ["Menú"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "price", "categoryId", "dishStateId"],
+                "properties": {
+                  "name": { "type": "string", "example": "Pollo" },
+                  "desc": {
+                    "type": "string",
+                    "example": "El mejor pollo de la vida"
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 15000.0
+                  },
+                  "categoryId": { "type": "integer", "example": 1 },
+                  "dishStateId": { "type": "integer", "example": 1 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "New Dish": {
+                          "id": 2,
+                          "name": "Pollo",
+                          "desc": "El mejor pollo de la vida",
+                          "price": 15000,
+                          "menuFoodCategory": {
+                            "category": "Entrada"
+                          },
+                          "dishState": {
+                            "name": "Stockeado"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mala request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Formato de request equivocado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rechazado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Usuario no tiene permisos suficientes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/menu/update": {
+      "patch": {
+        "summary": "Cambiar el estado de un plato en el menu",
+        "description": "Cambia el estado de un plato Stockeado a un plato Descontinuado",
+        "tags": ["Menú"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dishId": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "dishStateId": {
+                    "type": "integer",
+                    "example": 2,
+                    "$comment": "Agotado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "dishId": 1,
+                        "status": "actualizado"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mala request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Formato de request equivocado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rechazado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Usuario no tiene permisos suficientes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tables": {
+      "get": {
+        "description": "Obtiene la lista de mesas disponibles en el restaurante",
+        "summary": "Obtener mesas disponibles",
+        "operationId": "getAvailableTables",
+        "tags": ["Mesas"],
+        "responses": {
+          "200": {
+            "description": "Lista de mesas disponibles obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/OkResponse" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "Tables": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": { "type": "integer", "example": 1 },
+                                  "size": { "type": "integer", "example": 4 }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": true,
+                      "data": {
+                        "Tables": [
+                          { "id": 1, "size": 4 },
+                          { "id": 2, "size": 4 }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tables/admin": {
+      "get": {
+        "description": "Obtiene la lista completa de mesas del restaurante (solo para administradores)",
+        "summary": "Obtener todas las mesas",
+        "operationId": "getAllTablesAdmin",
+        "tags": ["Mesas"],
+        "responses": {
+          "200": {
+            "description": "Lista de todas las mesas obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/OkResponse" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "Tables": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": { "type": "integer", "example": 1 },
+                                  "size": { "type": "integer", "example": 4 },
+                                  "mesaState": {
+                                    "type": "object",
+                                    "properties": {
+                                      "state": {
+                                        "type": "string",
+                                        "example": "Libre"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "Tables": [
+                          {
+                            "id": 1,
+                            "size": 4,
+                            "mesaState": {
+                              "state": "Libre"
+                            }
+                          },
+                          {
+                            "id": 2,
+                            "size": 4,
+                            "mesaState": {
+                              "state": "Libre"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mala request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Formato de request equivocado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rechazado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Usuario no tiene permisos suficientes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tables/update": {
+      "patch": {
+        "description": "Actualiza el estado de una mesa (solo para administradores)",
+        "summary": "Actualizar estado de mesa",
+        "operationId": "updateTableState",
+        "tags": ["Mesas"],
+        "requestBody": {
+          "description": "Datos necesarios para actualizar el estado de una mesa",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tableId": { "type": "integer", "example": 1 },
+                  "tableStateId": { "type": "integer", "example": 1 }
+                },
+                "required": ["tableId", "tableStateId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estado de mesa actualizado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/OkResponse" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "table": { "type": "string", "example": "updated" }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "table": "updated"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mala request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Formato de request equivocado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rechazado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Usuario no tiene permisos suficientes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ItemMenu": {
+        "type": "object",
+        "description": "Representa un item del menú del restaurante",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "id",
+            "description": "Identificador único del item",
+            "example": "2"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre del plato/bebida",
+            "example": "Pizza Margarita"
+          },
+          "desc": {
+            "type": "string",
+            "description": "Descripción detallada del item",
+            "example": "Pizza clásica con salsa de tomate, mozzarella y albahaca"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio en pesos",
+            "example": 12000.0
+          },
+          "menuFoodCategory": {
+            "type": "object",
+            "description": "Categoría del item (entrada, principal, postre)",
+            "example": { "category": "Principal" }
+          }
+        },
+        "required": ["id", "nombre", "precio"]
+      },
+      "GenericError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "description": "Indica si la respuesta fue correcta o no",
+            "example": false
+          },
+          "error": {
+            "type": "string",
+            "description": "Descripción del error",
+            "example": "Error interno del servidor"
+          }
+        },
+        "required": ["status", "error"]
+      },
+      "OkResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "description": "Indica si la respuesta fue correcta o no",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "description": "La información de la respuesta",
+            "example": { "id": 1, "nombre": "Ejemplo genérico" }
+          }
+        },
+        "required": ["data"]
+      }
+    }
+  }
+}

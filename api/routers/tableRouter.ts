@@ -39,7 +39,7 @@ tableRouter.post("/post", async(req: Request,res: Response) => {
 
         const tableSize = req.body.size
         if (!tableSize){
-            sendJSONResponse(res, 401, "Formato de post equivocado.")
+            sendJSONResponse(res, 400, "Formato de post equivocado.")
             return;
         }
         const newTable = await postTable(tableSize)
@@ -58,7 +58,7 @@ tableRouter.patch("/update", async(req: Request,res: Response) => {
         const tableId = req.body.tableId
         const tableStateId = req.body.tableStateId 
         if (!tableId || !tableStateId){
-            sendJSONResponse(res, 401, "Formato de update equivocado.")
+            sendJSONResponse(res, 400, "Formato de update equivocado.")
             return;
         }
 

@@ -35,7 +35,7 @@ userRouter.post('/post', async (req, res) => {
     try {
         const { name , mail, phoneNumber, password, addressId }  = req.body
         if (!name || !mail || !phoneNumber || !password || !addressId){
-            sendJSONResponse(res, 401, "Bad Request")
+            sendJSONResponse(res, 400, "Bad Request")
         }
         const newUser = await postUser(name,mail,phoneNumber,password, addressId);
         sendJSONResponse(res, 200, {newUser: newUser})
