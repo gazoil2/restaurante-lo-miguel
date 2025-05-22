@@ -5,16 +5,6 @@ import { isRequestUserAdmin } from "../utils/checkAdmin"
 import { sendJSONResponse } from '../utils/response';
 export const orderRouter = express.Router();
 
-/*
- *@swagger
- *paths:
- *  /orders:
- *      get:
- *          summary: Get a user by ID
- *
-*/
-
-
 orderRouter.get('/', async (req: Request, res: Response) => {
     try {
         const isAdmin = await isRequestUserAdmin(req, res);
