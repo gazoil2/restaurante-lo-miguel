@@ -39,8 +39,6 @@ orderRouter.get('/:id', async (req, res) => {
 
 orderRouter.post('/post', async (req, res) => {
     try {
-        const isAdmin = await isRequestUserAdmin(req, res);
-        if (!isAdmin) return;
 
         const { user, address } = req.body
 
@@ -55,8 +53,6 @@ orderRouter.post('/post', async (req, res) => {
 
 orderRouter.post('/add-detail', async (req, res) => {
     try {
-        const isAdmin = isRequestUserAdmin(req, res);
-        if (!isAdmin) return;
 
         const { orderHeaderId, dishId, amount } = req.body
         const newOrderDetail = await addOrderDetail(parseInt(orderHeaderId), parseInt(dishId), parseInt(amount));
@@ -86,6 +82,8 @@ orderRouter.get('/state/:id', async(req, res) => {
 
 orderRouter.patch('/update', async(req, res) => {
     try {
+        const isAdmin = await isRequestUserAdmin(req, res);
+        if (!isAdmin) return;
         const { id, state } = req.body;
 
         console.log(id, state);
