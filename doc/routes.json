@@ -28,7 +28,7 @@
                   "type": "object",
                   "properties": {
                     "status": {
-                      "type": "string",
+                      "type": "boolean",
                       "description": "Estado de la operación",
                       "example": "success"
                     },
@@ -95,9 +95,12 @@
                         "menu": [
                           {
                             "id": "1",
-                            "name": "Pizza Skibidi",
-                            "desc": "Pizza con extra skibidi",
+                            "name": "Pizza Muzzarela",
+                            "desc": "Pizza con extra queso",
                             "price": 15000,
+                            "dishState": {
+                              "name": "Stockeado"
+                            },
                             "menuFoodCategory": {
                               "Category": "Principal"
                             }
@@ -224,7 +227,7 @@
                 "examples": {
                   "Default": {
                     "value": {
-                      "status": "success",
+                      "status": true,
                       "data": {
                         "New Dish": {
                           "id": 2,
@@ -341,7 +344,7 @@
                 "examples": {
                   "Default": {
                     "value": {
-                      "status": "success",
+                      "status": true,
                       "data": {
                         "dishId": 1,
                         "status": "actualizado"
@@ -555,7 +558,7 @@
                 "examples": {
                   "Default": {
                     "value": {
-                      "status": "success",
+                      "status": true,
                       "data": {
                         "table": "Reservada correctamente"
                       }
@@ -564,7 +567,7 @@
                 }
               }
             }
-          }, 
+          },
           "500": {
             "description": "Error interno del servidor",
             "content": {
@@ -644,7 +647,7 @@
                 "examples": {
                   "Default": {
                     "value": {
-                      "status": "success",
+                      "status": true,
                       "data": {
                         "Tables": [
                           {
@@ -788,7 +791,7 @@
                 "examples": {
                   "Default": {
                     "value": {
-                      "status": "success",
+                      "status": true,
                       "data": {
                         "table": "updated"
                       }
@@ -828,6 +831,595 @@
                     "value": {
                       "status": false,
                       "error": "Usuario no tiene permisos suficientes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/post": {
+      "post": {
+        "description": "Crea un nuevo usuario con su dirección asociada",
+        "summary": "Registrar nuevo usuario",
+        "operationId": "createUser",
+        "tags": [
+          "Usuarios"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "mail",
+                  "phoneNumber",
+                  "password",
+                  "province",
+                  "city",
+                  "street",
+                  "number",
+                  "otherDetails"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "gazo"
+                  },
+                  "mail": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "gazo@gmail.com"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "example": "535312"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "12345678"
+                  },
+                  "province": {
+                    "type": "string",
+                    "example": "Mendoza"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "Mendoza"
+                  },
+                  "street": {
+                    "type": "string",
+                    "example": "Juan B Justo"
+                  },
+                  "number": {
+                    "type": "string",
+                    "example": "600"
+                  },
+                  "otherDetails": {
+                    "type": "string",
+                    "example": "Golpear la reja y gritar"
+                  }
+                }
+              },
+              "examples": {
+                "Default": {
+                  "value": {
+                    "name": "gazo",
+                    "mail": "gazo@gmail.com",
+                    "phoneNumber": "535312",
+                    "password": "12345678",
+                    "province": "Mendoza",
+                    "city": "Mendoza",
+                    "street": "Juan B Justo",
+                    "number": "600",
+                    "otherDetails": "Golpear la reja y gritar"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario creado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/OkResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "newUser": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 4
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "gazo"
+                                },
+                                "mail": {
+                                  "type": "string",
+                                  "example": "gazo1@gmail.com"
+                                },
+                                "phoneNumber": {
+                                  "type": "string",
+                                  "example": "535312"
+                                },
+                                "userAddress": {
+                                  "type": "object",
+                                  "properties": {
+                                    "province": {
+                                      "type": "string",
+                                      "example": "Mendoza"
+                                    },
+                                    "city": {
+                                      "type": "string",
+                                      "example": "Mendoza"
+                                    },
+                                    "street": {
+                                      "type": "string",
+                                      "example": "Juan B Justo"
+                                    },
+                                    "number": {
+                                      "type": "string",
+                                      "example": "600"
+                                    },
+                                    "otherDetails": {
+                                      "type": "string",
+                                      "example": "Golpear la reja y gritar"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": true,
+                      "data": {
+                        "newUser": {
+                          "id": 4,
+                          "name": "gazo",
+                          "mail": "gazo1@gmail.com",
+                          "phoneNumber": "535312",
+                          "userAddress": {
+                            "province": "Mendoza",
+                            "city": "Mendoza",
+                            "street": "Juan B Justo",
+                            "number": "600",
+                            "otherDetails": "Golpear la reja y gritar"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/admin": {
+      "get": {
+        "description": "Obtiene todos los usuarios registrados en el sistema (acceso solo para administradores)",
+        "summary": "Obtener todos los usuarios",
+        "operationId": "getAllUsers",
+        "tags": [
+          "Usuarios"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuarios obtenida exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/OkResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "users": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Juan Perez"
+                                  },
+                                  "mail": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "juan@example.com"
+                                  },
+                                  "phoneNumber": {
+                                    "type": "string",
+                                    "example": "1122334455"
+                                  },
+                                  "userAddress": {
+                                    "type": "object",
+                                    "properties": {
+                                      "province": {
+                                        "type": "string",
+                                        "example": "Buenos Aires"
+                                      },
+                                      "city": {
+                                        "type": "string",
+                                        "example": "Avellaneda"
+                                      },
+                                      "street": {
+                                        "type": "string",
+                                        "example": "Sarmiento"
+                                      },
+                                      "number": {
+                                        "type": "string",
+                                        "example": "97"
+                                      },
+                                      "otherDetails": {
+                                        "type": "string",
+                                        "example": "Departamento 12 D"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "users": [
+                          {
+                            "id": 1,
+                            "name": "Juan Perez",
+                            "mail": "juan@example.com",
+                            "phoneNumber": "1122334455",
+                            "userAddress": {
+                              "province": "Buenos Aires",
+                              "city": "Avellaneda",
+                              "street": "Sarmiento",
+                              "number": "97",
+                              "otherDetails": "Departamento 12 D"
+                            }
+                          },
+                          {
+                            "id": 2,
+                            "name": "Admin",
+                            "mail": "Admin@Admin.com",
+                            "phoneNumber": "Admin",
+                            "userAddress": {
+                              "province": "Buenos Aires",
+                              "city": "Avellaneda",
+                              "street": "Sarmiento",
+                              "number": "97",
+                              "otherDetails": "Departamento 12 D"
+                            }
+                          },
+                          {
+                            "id": 3,
+                            "name": "gazo",
+                            "mail": "gazo@gmail.com",
+                            "phoneNumber": "535312",
+                            "userAddress": {
+                              "province": "Buenos Aires",
+                              "city": "Avellaneda",
+                              "street": "Sarmiento",
+                              "number": "97",
+                              "otherDetails": "Departamento 12 D"
+                            }
+                          },
+                          {
+                            "id": 4,
+                            "name": "gazo",
+                            "mail": "gazo1@gmail.com",
+                            "phoneNumber": "535312",
+                            "userAddress": {
+                              "province": "Mendoza",
+                              "city": "Mendoza",
+                              "street": "Juan B Justo",
+                              "number": "600",
+                              "otherDetails": "Golpear la reja y gritar"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mala request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Formato de request equivocado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rechazado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Usuario no tiene permisos suficientes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/admin/{id}": {
+      "get": {
+        "description": "Obtiene los detalles completos de un usuario específico (acceso solo para administradores)",
+        "summary": "Obtener usuario por ID",
+        "operationId": "getUserById",
+        "tags": [
+          "Usuarios"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del usuario a buscar",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario encontrado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/OkResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "user": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "example": "Juan Perez"
+                                },
+                                "mail": {
+                                  "type": "string",
+                                  "format": "email",
+                                  "example": "juan@example.com"
+                                },
+                                "phoneNumber": {
+                                  "type": "string",
+                                  "example": "1122334455"
+                                },
+                                "userAddress": {
+                                  "type": "object",
+                                  "properties": {
+                                    "province": {
+                                      "type": "string",
+                                      "example": "Buenos Aires"
+                                    },
+                                    "city": {
+                                      "type": "string",
+                                      "example": "Avellaneda"
+                                    },
+                                    "street": {
+                                      "type": "string",
+                                      "example": "Sarmiento"
+                                    },
+                                    "number": {
+                                      "type": "integer",
+                                      "example": 97
+                                    },
+                                    "otherDetails": {
+                                      "type": "string",
+                                      "example": "Departamento 12 D"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": true,
+                      "data": {
+                        "user": {
+                          "id": 1,
+                          "name": "Juan Perez",
+                          "mail": "juan@example.com",
+                          "phoneNumber": "1122334455",
+                          "userAddress": {
+                            "province": "Buenos Aires",
+                            "city": "Avellaneda",
+                            "street": "Sarmiento",
+                            "number": 97,
+                            "otherDetails": "Departamento 12 D"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mala request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Formato de request equivocado."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rechazado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Usuario no tiene permisos suficientes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "No se pudo encontrar el recurso."
                     }
                   }
                 }

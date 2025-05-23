@@ -5,13 +5,18 @@ import { error } from 'console';
 import { sendJSONResponse } from '../utils/response';
 import { send } from 'process';
 import { postAddress } from '../services/addressService';
+import { isRequestUserAdmin } from '../utils/checkAdmin';
 export const userRouter = express.Router();
 
 
 userRouter.get('/admin/:id', async (req, res) => {
     try {
+        const isAdmin = await isRequestUserAdmin(req, res);
+        if (!isAdmin) return;
+
         const { id } = req.params
         const user = await getUserById(parseInt(id));
+        
         if (!user){
             sendJSONResponse(res, 404, "User not found")
         }
@@ -24,8 +29,12 @@ userRouter.get('/admin/:id', async (req, res) => {
 
 userRouter.get('/admin', async (req, res) => {
     try {
+        const isAdmin = await isRequestUserAdmin(req, res);
+        if (!isAdmin) return;
+
         const users = await getAllUser();
         sendJSONResponse(res, 200, {users})
+        
     } catch(err) {
         console.log(err)
         sendJSONResponse(res, 500)

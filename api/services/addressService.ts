@@ -36,7 +36,7 @@ export const postAddress = async (
     province: string,
     city: string,
     street: string,
-    number: number,
+    number: string,
     otherDetails: string
   ) => {
     return await $db.address.create({

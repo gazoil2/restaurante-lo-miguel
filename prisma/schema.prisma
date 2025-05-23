@@ -16,7 +16,7 @@ model Address {
   province     String
   city         String
   street       String
-  number       Int
+  number       String
   otherDetails String
 
   user        User[]

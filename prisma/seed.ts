@@ -10,7 +10,7 @@ async function main() {
       province: 'Buenos Aires',
       city: 'Avellaneda',
       street: 'Sarmiento',
-      number: 97,
+      number: "97",
       otherDetails: 'Departamento 12 D'
     },
   })
