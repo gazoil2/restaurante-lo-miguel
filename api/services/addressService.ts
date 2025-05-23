@@ -16,10 +16,10 @@ export const getAllAddresses = async() => {
 }
 
 
-export const getAddressById = async(idUser: number) => {
+export const getAddressById = async(id: number) => {
     return $db.address.findUnique(
         {
-            where: {id: idUser},
+            where: {id: id},
             select: {
                 id: true,
                 province: true,

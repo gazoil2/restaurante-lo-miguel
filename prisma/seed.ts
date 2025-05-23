@@ -41,7 +41,7 @@ async function main() {
   })
 
   const admin = await prisma.admin.upsert({
-    where: {id: 1},
+    where: {id: 2},
     update: {},
     create: {
       id: 2,
@@ -86,7 +86,7 @@ async function main() {
     where: {id : 2},
     update: {},
     create: {
-      id: 1,
+      id: 2,
       name: "Agotado"
     }
   })
@@ -95,7 +95,7 @@ async function main() {
     where: {id : 3},
     update: {},
     create: {
-      id: 1,
+      id: 3,
       name: "Descontinuado"
     }
   })
@@ -126,7 +126,7 @@ async function main() {
   })
 
   const finalizada = await prisma.orderState.upsert({
-    where: {id : 3},
+    where: {id : 4},
     update: {},
     create: {
       state: "Finalizada"

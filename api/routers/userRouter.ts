@@ -4,6 +4,7 @@ import { getUserById, getAllUser, postUser } from '../services/userService';
 import { error } from 'console';
 import { sendJSONResponse } from '../utils/response';
 import { send } from 'process';
+import { postAddress } from '../services/addressService';
 export const userRouter = express.Router();
 
 
@@ -33,11 +34,12 @@ userRouter.get('/admin', async (req, res) => {
 
 userRouter.post('/post', async (req, res) => {
     try {
-        const { name , mail, phoneNumber, password, addressId }  = req.body
-        if (!name || !mail || !phoneNumber || !password || !addressId){
+        const { name , mail, phoneNumber, password, province, city, street, number, otherDetails }  = req.body
+        if (!name || !mail || !phoneNumber || !password || !province || !city || !street || !number || !otherDetails){
             sendJSONResponse(res, 400, "Bad Request")
         }
-        const newUser = await postUser(name,mail,phoneNumber,password, addressId);
+        const newAdress = await postAddress(province, city, street, number, otherDetails)
+        const newUser = await postUser(name,mail,phoneNumber,password, newAdress.id);
         sendJSONResponse(res, 200, {newUser: newUser})
     } catch(err) {
         console.log(err)

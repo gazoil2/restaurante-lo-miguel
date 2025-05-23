@@ -28,7 +28,7 @@ dishRouter.get('/admin', async (req : Request, res: Response) => {
 })
 
 
-dishRouter.post('/post', async (req : Request, res: Response) => {
+dishRouter.post('/admin/post', async (req : Request, res: Response) => {
     try{
         const isAdmin = await isRequestUserAdmin(req,res)
         if (!isAdmin) return;
@@ -50,7 +50,7 @@ dishRouter.post('/post', async (req : Request, res: Response) => {
 })
 
 
-dishRouter.patch('/update', async (req : Request, res: Response) => {
+dishRouter.patch('/admin/update', async (req : Request, res: Response) => {
     try{
         const isAdmin = await isRequestUserAdmin(req,res)
         if (!isAdmin) return;

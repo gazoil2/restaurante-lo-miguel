@@ -5,14 +5,20 @@
     "version": "1.0",
     "description": "API para la gestión del menú de un restaurante"
   },
-  "servers": [{ "url": "https://api.server.test/v1" }],
+  "servers": [
+    {
+      "url": "https://api.server.test/v1"
+    }
+  ],
   "paths": {
     "/menu": {
       "get": {
         "summary": "Obtener el menú completo",
         "description": "Recupera el menú completo disponible para todos los usuarios. Devuelve un array con todos los items del menú que estén stockeados.",
         "operationId": "obtenerMenu",
-        "tags": ["Menú"],
+        "tags": [
+          "Menú"
+        ],
         "responses": {
           "200": {
             "description": "Operación exitosa",
@@ -70,7 +76,9 @@
         "summary": "Obtener el menú con información adicional",
         "parameters": [],
         "operationId": "obtenerMenuAdmin",
-        "tags": ["Menú"],
+        "tags": [
+          "Menú"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -159,20 +167,30 @@
         }
       }
     },
-    "/menu/post": {
+    "/menu/admin/post": {
       "post": {
         "summary": "Crear un nuevo plato en el menú",
         "description": "Añade un nuevo item al menú con su nombre, descripción, precio, categoría y estado.",
-        "tags": ["Menú"],
+        "tags": [
+          "Menú"
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["name", "price", "categoryId", "dishStateId"],
+                "required": [
+                  "name",
+                  "price",
+                  "categoryId",
+                  "dishStateId"
+                ],
                 "properties": {
-                  "name": { "type": "string", "example": "Pollo" },
+                  "name": {
+                    "type": "string",
+                    "example": "Pollo"
+                  },
                   "desc": {
                     "type": "string",
                     "example": "El mejor pollo de la vida"
@@ -182,8 +200,14 @@
                     "format": "float",
                     "example": 15000.0
                   },
-                  "categoryId": { "type": "integer", "example": 1 },
-                  "dishStateId": { "type": "integer", "example": 1 }
+                  "categoryId": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "dishStateId": {
+                    "type": "integer",
+                    "example": 1
+                  }
                 }
               }
             }
@@ -278,11 +302,13 @@
         }
       }
     },
-    "/menu/update": {
+    "/menu/admin/update": {
       "patch": {
         "summary": "Cambiar el estado de un plato en el menu",
         "description": "Cambia el estado de un plato Stockeado a un plato Descontinuado",
-        "tags": ["Menú"],
+        "tags": [
+          "Menú"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -388,7 +414,9 @@
         "description": "Obtiene la lista de mesas disponibles en el restaurante",
         "summary": "Obtener mesas disponibles",
         "operationId": "getAvailableTables",
-        "tags": ["Mesas"],
+        "tags": [
+          "Mesas"
+        ],
         "responses": {
           "200": {
             "description": "Lista de mesas disponibles obtenida exitosamente",
@@ -396,7 +424,9 @@
               "application/json": {
                 "schema": {
                   "allOf": [
-                    { "$ref": "#/components/schemas/OkResponse" },
+                    {
+                      "$ref": "#/components/schemas/OkResponse"
+                    },
                     {
                       "type": "object",
                       "properties": {
@@ -408,8 +438,14 @@
                               "items": {
                                 "type": "object",
                                 "properties": {
-                                  "id": { "type": "integer", "example": 1 },
-                                  "size": { "type": "integer", "example": 4 }
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "size": {
+                                    "type": "integer",
+                                    "example": 4
+                                  }
                                 }
                               }
                             }
@@ -425,8 +461,14 @@
                       "status": true,
                       "data": {
                         "Tables": [
-                          { "id": 1, "size": 4 },
-                          { "id": 2, "size": 4 }
+                          {
+                            "id": 1,
+                            "size": 4
+                          },
+                          {
+                            "id": 2,
+                            "size": 4
+                          }
                         ]
                       }
                     }
@@ -456,12 +498,102 @@
         }
       }
     },
+    "/tables/reserve": {
+      "patch": {
+        "description": "Reserva una mesa específica en el restaurante",
+        "summary": "Reservar mesa",
+        "operationId": "reserveTable",
+        "tags": [
+          "Mesas"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tableId"
+                ],
+                "properties": {
+                  "tableId": {
+                    "type": "integer",
+                    "description": "ID de la mesa a reservar",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mesa reservada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/OkResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "table": {
+                              "type": "string",
+                              "example": "Reservada correctamente"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "table": "Reservada correctamente"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }, 
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Error interno del servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tables/admin": {
       "get": {
         "description": "Obtiene la lista completa de mesas del restaurante (solo para administradores)",
         "summary": "Obtener todas las mesas",
         "operationId": "getAllTablesAdmin",
-        "tags": ["Mesas"],
+        "tags": [
+          "Mesas"
+        ],
         "responses": {
           "200": {
             "description": "Lista de todas las mesas obtenida exitosamente",
@@ -469,7 +601,9 @@
               "application/json": {
                 "schema": {
                   "allOf": [
-                    { "$ref": "#/components/schemas/OkResponse" },
+                    {
+                      "$ref": "#/components/schemas/OkResponse"
+                    },
                     {
                       "type": "object",
                       "properties": {
@@ -481,8 +615,14 @@
                               "items": {
                                 "type": "object",
                                 "properties": {
-                                  "id": { "type": "integer", "example": 1 },
-                                  "size": { "type": "integer", "example": 4 },
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "size": {
+                                    "type": "integer",
+                                    "example": 4
+                                  },
                                   "mesaState": {
                                     "type": "object",
                                     "properties": {
@@ -586,12 +726,14 @@
         }
       }
     },
-    "/tables/update": {
+    "/tables/admin/update": {
       "patch": {
         "description": "Actualiza el estado de una mesa (solo para administradores)",
         "summary": "Actualizar estado de mesa",
         "operationId": "updateTableState",
-        "tags": ["Mesas"],
+        "tags": [
+          "Mesas"
+        ],
         "requestBody": {
           "description": "Datos necesarios para actualizar el estado de una mesa",
           "required": true,
@@ -600,10 +742,19 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "tableId": { "type": "integer", "example": 1 },
-                  "tableStateId": { "type": "integer", "example": 1 }
+                  "tableId": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "tableStateId": {
+                    "type": "integer",
+                    "example": 1
+                  }
                 },
-                "required": ["tableId", "tableStateId"]
+                "required": [
+                  "tableId",
+                  "tableStateId"
+                ]
               }
             }
           }
@@ -615,14 +766,19 @@
               "application/json": {
                 "schema": {
                   "allOf": [
-                    { "$ref": "#/components/schemas/OkResponse" },
+                    {
+                      "$ref": "#/components/schemas/OkResponse"
+                    },
                     {
                       "type": "object",
                       "properties": {
                         "data": {
                           "type": "object",
                           "properties": {
-                            "table": { "type": "string", "example": "updated" }
+                            "table": {
+                              "type": "string",
+                              "example": "updated"
+                            }
                           }
                         }
                       }
@@ -731,10 +887,16 @@
           "menuFoodCategory": {
             "type": "object",
             "description": "Categoría del item (entrada, principal, postre)",
-            "example": { "category": "Principal" }
+            "example": {
+              "category": "Principal"
+            }
           }
         },
-        "required": ["id", "nombre", "precio"]
+        "required": [
+          "id",
+          "nombre",
+          "precio"
+        ]
       },
       "GenericError": {
         "type": "object",
@@ -750,7 +912,10 @@
             "example": "Error interno del servidor"
           }
         },
-        "required": ["status", "error"]
+        "required": [
+          "status",
+          "error"
+        ]
       },
       "OkResponse": {
         "type": "object",
@@ -763,10 +928,15 @@
           "data": {
             "type": "object",
             "description": "La información de la respuesta",
-            "example": { "id": 1, "nombre": "Ejemplo genérico" }
+            "example": {
+              "id": 1,
+              "nombre": "Ejemplo genérico"
+            }
           }
         },
-        "required": ["data"]
+        "required": [
+          "data"
+        ]
       }
     }
   }

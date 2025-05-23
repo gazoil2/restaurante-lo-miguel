@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { getAllTables, getAvailableTables, postTable, updateStateTable } from '../services/tableService';
+import { getAllTables, getAvailableTables, postTable, reserveTable, updateStateTable } from '../services/tableService';
 import { isRequestUserAdmin } from '../utils/checkAdmin';
 import { error } from 'console';
 import { sendJSONResponse } from '../utils/response';
@@ -50,7 +50,22 @@ tableRouter.post("/post", async(req: Request,res: Response) => {
     }
 })
 
-tableRouter.patch("/update", async(req: Request,res: Response) => {
+tableRouter.patch("/reserve", async(req: Request,res: Response) => {
+    try{
+        const tableId = req.body.tableId
+        if (!tableId){
+            sendJSONResponse(res, 400, "Formato de update equivocado.")
+            return;
+        }
+        await reserveTable(tableId)
+        sendJSONResponse(res, 200, {"table": "Reservada correctamente"})
+    } catch (err) {
+        console.error(err);
+        sendJSONResponse(res, 500)
+    }
+})
+
+tableRouter.patch("/admin/update", async(req: Request,res: Response) => {
     try{
         const isAdmin = await isRequestUserAdmin(req,res)
         if (!isAdmin) return;

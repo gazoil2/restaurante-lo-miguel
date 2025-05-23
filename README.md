@@ -13,19 +13,24 @@ cd restaurante-lo-miguel`
 
 `npm install`
 
-### 3. Generar el cliente Prisma
+### 3. Crear un archivo .env
+
+Copiar la siguiente línea en el archivo:
+`DATABASE_URL=file:./../bd/data.db`
+
+### 4. Generar el cliente Prisma
 
 `npx prisma generate`
 
-### 4. Aplicar los cambios del esquema a la base de datos
+### 5. Aplicar los cambios del esquema a la base de datos
 
 `npx prisma migrate dev --name init`
 
-### 5. Seedear la base de datos (opcional)
+### 6. Seedear la base de datos
 
 `npm run seed`
 
-### 6. Inicializar el servidor
+### 7. Inicializar el servidor
 
 `npm run dev`
 
@@ -55,10 +60,11 @@ Borra toda la informacion de la base de datos.
   - [Setup Rapido](#setup-rapido)
     - [1. Clonar el repositorio](#1-clonar-el-repositorio)
     - [2. Instalar dependencias](#2-instalar-dependencias)
-    - [3. Generar el cliente Prisma](#3-generar-el-cliente-prisma)
-    - [4. Aplicar los cambios del esquema a la base de datos](#4-aplicar-los-cambios-del-esquema-a-la-base-de-datos)
-    - [5. Seedear la base de datos (opcional)](#5-seedear-la-base-de-datos-opcional)
-    - [6. Inicializar el servidor](#6-inicializar-el-servidor)
+    - [3. Crear un archivo .env](#3-crear-un-archivo-env)
+    - [4. Generar el cliente Prisma](#4-generar-el-cliente-prisma)
+    - [5. Aplicar los cambios del esquema a la base de datos](#5-aplicar-los-cambios-del-esquema-a-la-base-de-datos)
+    - [6. Seedear la base de datos](#6-seedear-la-base-de-datos)
+    - [7. Inicializar el servidor](#7-inicializar-el-servidor)
     - [Comandos Utiles](#comandos-utiles)
   - [Información sobre la API](#información-sobre-la-api)
   - [Integrantes](#integrantes)
