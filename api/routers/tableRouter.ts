@@ -5,6 +5,7 @@ import { isRequestUserAdmin } from '../utils/checkAdmin';
 import { error } from 'console';
 import { sendJSONResponse } from '../utils/response';
 import { send } from 'process';
+import { authMiddleware } from './authRouter';
 export const tableRouter = express.Router();
 
 tableRouter.get("/", async (req: Request, res: Response) => {
@@ -16,6 +17,10 @@ tableRouter.get("/", async (req: Request, res: Response) => {
         sendJSONResponse(res, 500)
     }
 });
+
+tableRouter.use("/admin", (req,res, next) => {
+    authMiddleware(req,res,next)
+})
 
 tableRouter.get("/admin", async (req: Request, res: Response) => {
     try {

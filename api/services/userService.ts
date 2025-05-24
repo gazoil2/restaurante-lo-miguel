@@ -83,3 +83,14 @@ export const postUser = async (
         where: {id: iduser}
     })
   }
+
+  export const loginUser = async(mail: string, password: string) => {
+    return await $db.user.findFirst({
+      where: {mail: mail, password: password},
+      select: {
+        id: true,
+        name: true,
+      }
+    })
+
+  }
