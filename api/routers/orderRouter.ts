@@ -1,8 +1,10 @@
 import express from "express";
 import { addOrderDetail, getAllOrders, getOrderById, getOrderDetails, getOrderState, postOrder, updateOrderState } from "../services/orderService";
 import { Request, Response} from 'express';
-import { isRequestUserAdmin } from "../utils/checkAdmin"
+import { getHeaderUserId, isRequestUserAdmin } from "../utils/checkAdmin"
 import { sendJSONResponse } from '../utils/response';
+import { checkUserIsAdmin } from "../services/authService";
+import { getUserById } from "../services/userService";
 export const orderRouter = express.Router();
 
 orderRouter.get('/', async (req: Request, res: Response) => {
@@ -23,12 +25,18 @@ orderRouter.get('/', async (req: Request, res: Response) => {
 
 orderRouter.get('/:id', async (req, res) => {
     try {
-        const isAdmin = await isRequestUserAdmin(req, res);
-        if (!isAdmin) return;
+        const isAdmin = await isRequestUserAdmin(req);
 
         const { id } = req.params
+        const idUser = getHeaderUserId(req)
         const details = await getOrderDetails(parseInt(id));
         const orderheader = await getOrderById(parseInt(id));
+
+        if (!isAdmin && orderheader?.userId != idUser) {
+            sendJSONResponse(res, 403, "Cannot access that order (permission denied)");
+
+            return;
+        };
 
         sendJSONResponse(res, 200, {header: orderheader, details: details})
     } catch(e) {
@@ -40,9 +48,16 @@ orderRouter.get('/:id', async (req, res) => {
 orderRouter.post('/post', async (req, res) => {
     try {
 
-        const { user, address } = req.body
+        const idUser = getHeaderUserId(req);
+        if (!idUser) return;
 
-        const newOrder = await postOrder(parseInt(user), parseInt(address));
+        const userData = await getUserById(idUser);
+        if (!userData?.addressId) {
+            sendJSONResponse(res, 500);
+            return;
+        }
+
+        const newOrder = await postOrder(idUser, userData?.addressId);
 
         sendJSONResponse(res, 200, {newOrder})
     } catch(err) {
@@ -54,7 +69,15 @@ orderRouter.post('/post', async (req, res) => {
 orderRouter.post('/add-detail', async (req, res) => {
     try {
 
+        const isAdmin = await isRequestUserAdmin(req);
+        const idUser = getHeaderUserId(req)
         const { orderHeaderId, dishId, amount } = req.body
+        const orderHeaderData = await getOrderById(parseInt(orderHeaderId))
+        if (!isAdmin && orderHeaderData?.userId != idUser) {
+            sendJSONResponse(res, 403, "Cannot modify that order (permission denied)")
+            return;
+        }
+        
         const newOrderDetail = await addOrderDetail(parseInt(orderHeaderId), parseInt(dishId), parseInt(amount));
 
         sendJSONResponse(res, 200, {newOrderDetail})
@@ -67,8 +90,15 @@ orderRouter.post('/add-detail', async (req, res) => {
 
 orderRouter.get('/state/:id', async(req, res) => {
     try {
-        const {id} = req.params
+        const isAdmin = await isRequestUserAdmin(req)
+        const idUser = getHeaderUserId(req)
+        const { id } = req.params
         const order = await getOrderState(parseInt(id));
+
+        if (!isAdmin && order?.userId != idUser) {
+            sendJSONResponse(res, 403, "Cannot access that order state (permission denied)")
+            return;
+        }
 
         sendJSONResponse(res, 200, {
             orderId: id,

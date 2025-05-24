@@ -18,6 +18,7 @@ export const getAllOrders = async () => {
 export const getOrderById = async (id: number) => {
     return await $db.orderHeader.findFirst({
         select: {
+            userId: true,
             id: true,
             total: true,
             discount: true,
@@ -37,6 +38,7 @@ export const getOrderById = async (id: number) => {
 export const getOrderState = async(id: number) => {
     return await $db.orderHeader.findUnique({
         select: {
+            userId: true,
             orderState: {
                 select: {
                     state: true,

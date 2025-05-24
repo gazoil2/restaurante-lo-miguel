@@ -1446,16 +1446,68 @@
           }
         }
       }
+    },
+
+    "/orders/{id}": {
+      
     }
   },
   "components": {
     "schemas": {
+      "UserData": {
+        "type":"object",
+        "description": "Representa datos de un usuario",
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "id",
+            "description": "Identificador único del usuario",
+            "example": "1"
+          },
+
+          "name": {
+            "type": "string",
+            "description": "Nombre completo del usuario",
+            "example":"Juan Pérez"
+          },
+
+          "mail": {
+            "type":"string",
+            "description": "El email del usuario",
+            "example":"capuccinoasesino@gmail.com"
+          },
+
+          "phoneNumber": {
+            "type":"string",
+            "description": "El número de telefono del usuario",
+            "example": "+5491138243537"
+          },
+
+          "password": {
+            "type": "string",
+            "description": "La contraseña del usuario",
+            "examples": ["****", "*********"]
+          },
+
+          "address": {
+            "type": "object",
+            "description": "La dirección al domicilio del usuario",
+            "example": {
+              "province": "Buenos Aires",
+              "city": "Wilde, Avellaneda",
+              "street": "Domingo Martinto",
+              "number": 1585,
+              "otherDetails": "Gritar fuerte porque no anda el timbre"
+            }
+          }
+        }
+      },
       "ItemMenu": {
         "type": "object",
         "description": "Representa un item del menú del restaurante",
         "properties": {
           "id": {
-            "type": "string",
+            "type": "number",
             "format": "id",
             "description": "Identificador único del item",
             "example": "2"
