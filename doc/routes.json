@@ -871,58 +871,13 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "name",
-                  "mail",
-                  "phoneNumber",
-                  "password",
-                  "province",
-                  "city",
-                  "street",
-                  "number",
-                  "otherDetails"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "gazo"
-                  },
-                  "mail": {
-                    "type": "string",
-                    "format": "email",
-                    "example": "gazo@gmail.com"
-                  },
-                  "phoneNumber": {
-                    "type": "string",
-                    "example": "535312"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "12345678"
-                  },
-                  "province": {
-                    "type": "string",
-                    "example": "Mendoza"
-                  },
-                  "city": {
-                    "type": "string",
-                    "example": "Mendoza"
-                  },
-                  "street": {
-                    "type": "string",
-                    "example": "Juan B Justo"
-                  },
-                  "number": {
-                    "type": "string",
-                    "example": "600"
-                  },
-                  "otherDetails": {
-                    "type": "string",
-                    "example": "Golpear la reja y gritar"
-                  }
-                }
+                "allOf": [
+                    {
+                      "$ref": "#/components/schemas/UserData"
+                    }
+                ]
               },
+
               "examples": {
                 "Default": {
                   "value": {
@@ -1449,7 +1404,396 @@
     },
 
     "/orders/{id}": {
-      
+      "get": {
+        "description": "Obtiene el header y detalles de la orden especificada",
+        "summary": "Obtener orden por id",
+        "operationId": "getOrderById",
+        "tags": ["Orders"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID de la orden a ver",
+          "schema": {
+            "type": "integer",
+            "example": 1
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Order"
+                    }
+                  ]
+                },
+
+                "example": {
+                  "succes": true,
+                  "data":{
+                    "header": {
+                      "userId": 1,
+                      "id": 1,
+                      "total": 1400,
+                      "discount": 0,
+                      "orderState": {
+                        "state": "En cocina"
+                      }
+                    },
+
+                    "details": [{
+                      "id": 1,
+                      "amount": 2,
+                      "total": 400,
+                      "discount": 0,
+                      "detailDish": {
+                        "name": "Rabas"
+                      }
+                    }]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Cannot access that order (permission denied)."
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Internal Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/orders/post": {
+      "post": {
+        "description": "Crea una orden bajo el nombre del usuario",
+        "summary": "Crear orden",
+        "operationId": "postOrder",
+        "tags": ["Orders"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/OrderHeader"
+                    }
+                  ]
+                },
+
+                "example": {
+                  "success": true,
+                  "data": {
+                    "newOrder": {
+                      "userId": 1,
+                      "id": 1,
+                      "total": 1400,
+                      "discount": 0,
+                      "orderState": {
+                        "state": "Pendiente"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Internal Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/orders/add-detail": {
+      "post": {
+        "description": "Agregar un item de comida bajo una orden",
+        "summary": "Agregar a la lista",
+        "operationId": "postOrder",
+        "tags": ["Orders"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/OrderHeader"
+                    }
+                  ]
+                },
+
+                "example": {
+                  "success": true,
+                  "data": {
+                    "newOrderDetail": {
+                      "total": 200,
+                      "amount": 1,
+                      "discount": 0,
+                      "detailDish": {
+                        "name": "Rabas",
+                        "menuFoodCategory": {
+                          "category": "Entrada"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "403": {
+            "description": "Forbidden Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Cannot modify that order (permission denied)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Internal Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/orders/state/{id}": {
+      "get": {
+        "description": "Accede al estado actual de una orden",
+        "summary": "Ver estado de la orden",
+        "operationId": "getOrderState",
+        "tags": ["Orders"],
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID de la orden a ver",
+          "schema": {
+            "type": "integer",
+            "example": 1
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/OrderHeader"
+                    }
+                  ]
+                },
+
+                "example": {
+                  "success": true,
+                  "data": {
+                    "orderId": 1,
+                    "state": "En cocina"
+                  }
+                }
+              }
+            }
+          },
+
+          "403": {
+            "description": "Forbidden Access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Cannot modify that order (permission denied)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Internal Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/orders/update": {
+      "patch": {
+        "description": "Actualizar el estado de la orden",
+        "summary": "Cambiar el estado de la orden",
+        "operationId": "updateOrderState",
+        "tags": ["Orders"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updatedOrder": {
+                      "type": "object",
+                      "description": "La orden editada",
+                      "properties": {
+                        "orderState": {
+                          "type": "object",
+                          "description": "El estado de la orden",
+                          "properties": {
+                            "state": {
+                              "type": "string",
+                              "description": "El estado de la orden"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+
+                "example": {
+                  "success": true,
+                  "data": {
+                    "updatedOrder": {
+                        "orderState": {
+                          "state": "En cocina"
+                        }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Internal Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1499,6 +1843,104 @@
               "number": 1585,
               "otherDetails": "Gritar fuerte porque no anda el timbre"
             }
+          }
+        }
+      },
+      "Order": {
+        "type":"object",
+        "description": "Una orden en general, cubre tanto header como details",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/OrderHeader"
+          },
+          "details": {
+            "type":"array",
+            "description": "Una lista de detalles de la orden",
+            "items": {
+              "$ref": "#/components/schemas/OrderDetail"
+            }
+          } 
+        }
+      },
+      "OrderHeader": {
+        "type": "object",
+        "description": "Encabezado de la orden",
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "id",
+            "description": "La id del header/encabezado",
+            "example": 1
+          },
+
+          "userId": {
+            "type": "number",
+            "description": "El usuario bajo el cual la orden fue creada",
+            "examples": [1, 2]
+          },
+          
+          "total": {
+            "type": "number",
+            "description": "El costo total de orden",
+            "examples": [400.0,  2500.0]
+          },
+
+          "discount": {
+            "type": "number",
+            "description": "El descuento hecho a la orden",
+            "examples": [2500.0, 400.0]
+          },
+
+
+          "orderStateId": {
+            "type": "number",
+            "description": "El id de estado de la orden",
+            "examples": [1, 2, 3]
+          },
+
+          "orderAddressId": {
+            "type": "number",
+            "description": "La id de direccion asociada a la orden",
+            "examples": [1]
+          }
+        }
+      },
+      "OrderDetail": {
+        "type": "object",
+        "description": "Un detalle de una orden",
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "id",
+            "description": "La id única del detalle"
+          },
+
+          "orderHeaderId": {
+            "type": "number",
+            "description": "El id de header asociado al detalle",
+            "examples": [1, 2]
+          },
+
+          "dishId": {
+            "type": "number",
+            "description": "La id del plato asociado al detalle",
+            "examples": [1, 2]
+          },
+
+          "amount": {
+            "type":"number",
+            "description": "La cantidad de items del plato comprado",
+            "examples": [1, 2]
+          },
+
+          "total": {
+            "type":"number",
+            "description": "Total de precio por este detalle"
+          },
+
+          "discount": {
+            "type":"number",
+            "description": "Descuento realizado a la orden en total"
           }
         }
       },
