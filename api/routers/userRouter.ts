@@ -38,9 +38,7 @@ userRouter.get('/admin', authenticatedRoute(async (req: AuthenticatedRequest, re
         }
 
         const users = await getAllUser();
-        console.log("corales")
         sendJSONResponse(res, 200, { users })
-        console.log("corales")
     } catch (err) {
         console.log(err)
         sendJSONResponse(res, 500)

@@ -111,6 +111,30 @@ orderRouter.get('/state/:id', authenticatedRoute(async (req: AuthenticatedReques
     }
 }))
 
+
+orderRouter.patch('/request/:id', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        const isAdmin = req.context.user.admin;
+        const idUser = parseInt(req.context.user.id)
+        const { id } = req.params
+        const order = await getOrderState(parseInt(id));
+
+        if (!isAdmin && order?.userId != idUser) {
+            sendJSONResponse(res, 403, "Cannot access that order state (permission denied)")
+            return;
+        }
+        const readyToBeCookedState = 2;
+        const newState = await updateOrderState(parseInt(id), readyToBeCookedState)
+        sendJSONResponse(res, 200, {
+            orderId: id,
+            state: newState.orderState.state,
+        })
+    } catch (err) {
+        console.log(err)
+        sendJSONResponse(res, 500)
+    }
+}))
+
 orderRouter.patch('/admin/update', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
