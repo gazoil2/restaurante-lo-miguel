@@ -31,6 +31,7 @@ export const getUserById = async(idUser : number) => {
             name: true,
             mail: true,
             phoneNumber: true,
+            addressId: true,
             userAddress: {
                 select: {
                     province: true,
