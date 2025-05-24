@@ -23,7 +23,7 @@ orderRouter.get('/', async (req: Request, res: Response) => {
     }
 })
 
-orderRouter.get('/:id', async (req, res) => {
+orderRouter.get('/:id', async (req: Request, res: Response) => {
     try {
         const isAdmin = await isRequestUserAdmin(req);
 
@@ -45,7 +45,7 @@ orderRouter.get('/:id', async (req, res) => {
     }
 })
 
-orderRouter.post('/post', async (req, res) => {
+orderRouter.post('/post', async (req : Request, res: Response) => {
     try {
 
         const idUser = getHeaderUserId(req);
@@ -66,7 +66,7 @@ orderRouter.post('/post', async (req, res) => {
     }
 })
 
-orderRouter.post('/add-detail', async (req, res) => {
+orderRouter.post('/add-detail', async (req: Request, res: Response) => {
     try {
 
         const isAdmin = await isRequestUserAdmin(req);
@@ -88,7 +88,7 @@ orderRouter.post('/add-detail', async (req, res) => {
     }
 })
 
-orderRouter.get('/state/:id', async(req, res) => {
+orderRouter.get('/state/:id', async(req: Request, res: Response) => {
     try {
         const isAdmin = await isRequestUserAdmin(req)
         const idUser = getHeaderUserId(req)
@@ -110,7 +110,7 @@ orderRouter.get('/state/:id', async(req, res) => {
     }
 })
 
-orderRouter.patch('/update', async(req, res) => {
+orderRouter.patch('/update', async(req: Request, res: Response) => {
     try {
         const isAdmin = await isRequestUserAdmin(req, res);
         if (!isAdmin) return;

@@ -5,6 +5,7 @@ import { sendJSONResponse } from '../utils/response';
 import { postAddress } from '../services/addressService';
 import { isRequestUserAdmin } from '../utils/checkAdmin';
 import { generateToken } from '../utils/jwtToken';
+import { checkUserIsAdmin } from '../services/authService';
 export const userRouter = express.Router();
 
 
@@ -69,7 +70,8 @@ userRouter.post('/login', async (req: Request, res: Response) => {
         if (!user?.id) {
             return sendJSONResponse(res, 401, { message: "Invalid credentials" });
         }
-        const token = generateToken(user.id);
+        const isAdmin = await checkUserIsAdmin(user.id);
+        const token = generateToken(user.id, isAdmin);
         
         return sendJSONResponse(res, 200, { 
             token: token,
