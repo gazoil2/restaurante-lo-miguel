@@ -35,7 +35,7 @@ export const getOrderById = async (id: number) => {
     })
 }
 
-export const getOrderState = async(id: number) => {
+export const getOrderState = async (id: number) => {
     return await $db.orderHeader.findUnique({
         select: {
             userId: true,
@@ -61,7 +61,7 @@ export const getOrderDetails = async (id: number) => {
             discount: true,
             detailDish: {
                 select: {
-                    name: true, 
+                    name: true,
                 }
             },
         },
@@ -110,7 +110,7 @@ export const addOrderDetail = async (orderHeaderId: number, dishId: number, amou
     })
 
     const orderHeader = await $db.orderHeader.findUnique({
-        where: {id: orderHeaderId}
+        where: { id: orderHeaderId }
     })
 
     if (!dish) {
@@ -128,7 +128,7 @@ export const addOrderDetail = async (orderHeaderId: number, dishId: number, amou
         data: {
             total: newTotal,
         },
-        where: {id: orderHeaderId}
+        where: { id: orderHeaderId }
     })
 
     return await $db.orderDetail.create({
@@ -166,7 +166,7 @@ export const updateOrderState = async (orderHeaderId: number, orderStateId: numb
             orderStateId,
         },
 
-        where: {id: orderHeaderId},
+        where: { id: orderHeaderId },
         select: {
             orderState: {
                 select: {

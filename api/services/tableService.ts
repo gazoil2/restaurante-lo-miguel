@@ -1,27 +1,27 @@
 import { error } from "console";
 import { $db } from "../db";
 
-export const getAvailableTables  = async() => {
-    return await $db.table.findMany({
-        select: {
-            id: true,
-            size: true,
-        },
-        where: {
-            mesaState: {
-                state: "Libre"
-            }
-        }
-    })
-}
-
-export const getAllTables = async() => {
+export const getAvailableTables = async () => {
   return await $db.table.findMany({
     select: {
       id: true,
-      size:true,
+      size: true,
+    },
+    where: {
       mesaState: {
-        select: {state: true},
+        state: "Libre"
+      }
+    }
+  })
+}
+
+export const getAllTables = async () => {
+  return await $db.table.findMany({
+    select: {
+      id: true,
+      size: true,
+      mesaState: {
+        select: { state: true },
       }
     }
   })
@@ -30,7 +30,7 @@ export const getAllTables = async() => {
 export const postTable = async (size: number) => {
   return await $db.table.create({
     data: {
-      size : size,
+      size: size,
       tableStateId: 1,
     },
     select: {
@@ -43,15 +43,15 @@ export const postTable = async (size: number) => {
   });
 };
 
-export const reserveTable = async(id: number) => {
+export const reserveTable = async (id: number) => {
   const stateId = await $db.table.findFirst({
-    where: {id: id},
+    where: { id: id },
     select: {
       tableStateId: true
     }
   })
   const freeStateId = 1;
-  if (stateId?.tableStateId === freeStateId){
+  if (stateId?.tableStateId === freeStateId) {
     const reservedStateId = 3;
     return await $db.table.update({
       where: {
@@ -65,17 +65,17 @@ export const reserveTable = async(id: number) => {
   } else {
     throw error("No se puede reservar una mesa que no este libre")
   }
-  
+
 }
 
 export const updateStateTable = async (id: number, tableStateId: number) => {
-    return await $db.table.update({
-      where: {
-        id: id,
-      },
-      data: {
-        tableStateId: tableStateId,
-      },
-    });
+  return await $db.table.update({
+    where: {
+      id: id,
+    },
+    data: {
+      tableStateId: tableStateId,
+    },
+  });
 };
 

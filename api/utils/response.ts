@@ -9,7 +9,7 @@ export const sendJSONResponse = (res: Response, status: number, data?: string | 
     } else {
         res.status(status).json({
             "status": "fail",
-            "data": data ? {error: data} : {
+            "data": data ? { error: data } : {
                 error: "Internal server error",
             },
         })

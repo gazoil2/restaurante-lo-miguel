@@ -113,24 +113,6 @@
               }
             }
           },
-          "400": {
-            "description": "Mala request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericError"
-                },
-                "examples": {
-                  "Default": {
-                    "value": {
-                      "status": false,
-                      "error": "Formato de request equivocado."
-                    }
-                  }
-                }
-              }
-            }
-          },
           "403": {
             "description": "Rechazado",
             "content": {
@@ -672,24 +654,7 @@
               }
             }
           },
-          "400": {
-            "description": "Mala request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericError"
-                },
-                "examples": {
-                  "Default": {
-                    "value": {
-                      "status": false,
-                      "error": "Formato de request equivocado."
-                    }
-                  }
-                }
-              }
-            }
-          },
+          
           "403": {
             "description": "Rechazado",
             "content": {

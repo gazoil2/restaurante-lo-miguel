@@ -1,34 +1,35 @@
 import express from "express";
 import { addOrderDetail, getAllOrders, getOrderById, getOrderDetails, getOrderState, postOrder, updateOrderState } from "../services/orderService";
-import { Request, Response} from 'express';
-import { getHeaderUserId, isRequestUserAdmin } from "../utils/checkAdmin"
+import { Request, Response } from 'express';
 import { sendJSONResponse } from '../utils/response';
 import { checkUserIsAdmin } from "../services/authService";
 import { getUserById } from "../services/userService";
+import { authMiddleware, authenticatedRoute, AuthenticatedRequest } from "./authRouter"
 export const orderRouter = express.Router();
 
-orderRouter.get('/', async (req: Request, res: Response) => {
-    try {
-        const isAdmin = await isRequestUserAdmin(req, res);
-        //if (!isAdmin) return;
+orderRouter.use('', authMiddleware)
 
-        console.log("oye bro")
+orderRouter.get('/admin', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        if (!req.context?.user?.admin) {
+            res.status(403).json({ error: 'Admin access required' });
+            return;
+        }
         const orders = await getAllOrders();
 
-        sendJSONResponse(res, 200, {orders})
-    } catch(e) {
+        sendJSONResponse(res, 200, { orders })
+    } catch (e) {
         console.log("Error: ", e);
 
         sendJSONResponse(res, 500)
     }
-})
+}))
 
-orderRouter.get('/:id', async (req: Request, res: Response) => {
+orderRouter.get('/:id', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const isAdmin = await isRequestUserAdmin(req);
-
+        const isAdmin = req.context.user.admin;
         const { id } = req.params
-        const idUser = getHeaderUserId(req)
+        const idUser = parseInt(req.context.user.id)
         const details = await getOrderDetails(parseInt(id));
         const orderheader = await getOrderById(parseInt(id));
 
@@ -38,17 +39,17 @@ orderRouter.get('/:id', async (req: Request, res: Response) => {
             return;
         };
 
-        sendJSONResponse(res, 200, {header: orderheader, details: details})
-    } catch(e) {
+        sendJSONResponse(res, 200, { header: orderheader, details: details })
+    } catch (e) {
         console.log(e);
         sendJSONResponse(res, 500);
     }
-})
+}))
 
-orderRouter.post('/post', async (req : Request, res: Response) => {
+orderRouter.post('/post', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
 
-        const idUser = getHeaderUserId(req);
+        const idUser = parseInt(req.context.user.id)
         if (!idUser) return;
 
         const userData = await getUserById(idUser);
@@ -59,39 +60,39 @@ orderRouter.post('/post', async (req : Request, res: Response) => {
 
         const newOrder = await postOrder(idUser, userData?.addressId);
 
-        sendJSONResponse(res, 200, {newOrder})
-    } catch(err) {
+        sendJSONResponse(res, 200, { newOrder })
+    } catch (err) {
         sendJSONResponse(res, 500)
         console.log(err);
     }
-})
+}))
 
-orderRouter.post('/add-detail', async (req: Request, res: Response) => {
+orderRouter.post('/add-detail', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
 
-        const isAdmin = await isRequestUserAdmin(req);
-        const idUser = getHeaderUserId(req)
+        const isAdmin = req.context.user.admin;
+        const idUser = parseInt(req.context.user.id)
         const { orderHeaderId, dishId, amount } = req.body
         const orderHeaderData = await getOrderById(parseInt(orderHeaderId))
         if (!isAdmin && orderHeaderData?.userId != idUser) {
             sendJSONResponse(res, 403, "Cannot modify that order (permission denied)")
             return;
         }
-        
+
         const newOrderDetail = await addOrderDetail(parseInt(orderHeaderId), parseInt(dishId), parseInt(amount));
 
-        sendJSONResponse(res, 200, {newOrderDetail})
+        sendJSONResponse(res, 200, { newOrderDetail })
 
-    } catch(err) {
+    } catch (err) {
         sendJSONResponse(res, 500)
         console.log(err)
     }
-})
+}))
 
-orderRouter.get('/state/:id', async(req: Request, res: Response) => {
+orderRouter.get('/state/:id', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const isAdmin = await isRequestUserAdmin(req)
-        const idUser = getHeaderUserId(req)
+        const isAdmin = req.context.user.admin;
+        const idUser = parseInt(req.context.user.id)
         const { id } = req.params
         const order = await getOrderState(parseInt(id));
 
@@ -104,23 +105,23 @@ orderRouter.get('/state/:id', async(req: Request, res: Response) => {
             orderId: id,
             state: order?.orderState.state,
         })
-    } catch(err) {
+    } catch (err) {
         console.log(err)
         sendJSONResponse(res, 500)
     }
-})
+}))
 
-orderRouter.patch('/update', async(req: Request, res: Response) => {
+orderRouter.patch('/admin/update', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
-        const isAdmin = await isRequestUserAdmin(req, res);
-        if (!isAdmin) return;
+        if (!req.context?.user?.admin) {
+            res.status(403).json({ error: 'Admin access required' });
+            return;
+        }
         const { id, state } = req.body;
-
-        console.log(id, state);
         const updatedOrder = await updateOrderState(parseInt(id), parseInt(state));
-        sendJSONResponse(res, 200, {updatedOrder})
-    } catch(err) {
+        sendJSONResponse(res, 200, { updatedOrder })
+    } catch (err) {
         sendJSONResponse(res, 500)
         console.log(err);
     }
-})
+}))
