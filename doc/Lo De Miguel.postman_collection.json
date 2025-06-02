@@ -1,0 +1,1278 @@
+{
+	"info": {
+		"_postman_id": "f84df11e-c657-4ef4-a0d0-6d930d335a7c",
+		"name": "Lo De Miguel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44898176",
+		"_collection_link": "https://beni-3975031.postman.co/workspace/LO-DE-MIGUEL~2379d408-64b4-4338-8371-bdcd166f0bd8/collection/44898176-f84df11e-c657-4ef4-a0d0-6d930d335a7c?action=share&source=collection_link&creator=44898176"
+	},
+	"item": [
+		{
+			"name": "Tables",
+			"item": [
+				{
+					"name": "Tables",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/tables",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tables (Admin View)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 1,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/tables/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tables",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "iduser",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reserve Table",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 1,\n    \"admin\": false\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tableId\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/tables/reserve",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tables",
+								"reserve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Table State (Admin)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 2,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tableId\": 15,\n    \"tableStateId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/tables/admin/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tables",
+								"admin",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Menu",
+			"item": [
+				{
+					"name": "Menu",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/menu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Menu (Admin View)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 1,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/menu/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"menu",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Dish (Admin)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 2,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Pollo\",\n  \"desc\": \"El mejor pollo de la vida\",\n  \"price\": 15000.00,\n  \"categoryId\": 1,\n  \"dishStateId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/menu/admin/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"menu",
+								"admin",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Menu State (Admin)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 2,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dishId\": 1,\n    \"dishStateId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/menu/admin/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"menu",
+								"admin",
+								"update"
+							],
+							"query": [
+								{
+									"key": "iduser",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "View order state",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 3,\n    \"admin\": false\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/orders/state/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"state",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Order",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 3,\n    \"admin\": false\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "idUser",
+								"value": "1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/orders/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Order",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 3,\n    \"admin\": false\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/orders/request/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"request",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 3,\n    \"admin\": false\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "idUser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/orders/post/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"post",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Detail",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 3,\n    \"admin\": false\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "idUser",
+								"value": "1",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderHeaderId\": 6,\n    \"dishId\": 1,\n    \"amount\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/orders/add-detail",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"add-detail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Orders (Admin)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 1,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/orders/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order State (Admin)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 2,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "idUser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 5,\n    \"state\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/orders/admin/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orders",
+								"admin",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mail\": \"gazo3@gmail.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"gazo\",\n    \"mail\": \"gazo3@gmail.com\",\n    \"phoneNumber\": \"535312\",\n    \"password\": \"12345678\",\n    \"province\": \"Mendoza\",\n    \"city\": \"Mendoza\",\n    \"street\": \"Juan B Justo\",\n    \"number\": \"600\",\n    \"otherDetails\": \"Golpear la reja y gritar\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User (Admin)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 1,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/admin/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"admin",
+								"2"
+							],
+							"query": [
+								{
+									"key": "iduser",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users (Admin)",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "payload",
+									"value": "{\n    \"id\": 1,\n    \"admin\": true\n}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "secret",
+									"value": "gazo",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "iduser",
+								"value": "2",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

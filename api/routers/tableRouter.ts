@@ -40,7 +40,7 @@ tableRouter.patch("/reserve", async (req: Request, res: Response) => {
     try {
         const tableId = req.body.tableId
         if (!tableId) {
-            sendJSONResponse(res, 400, "Formato de update equivocado.")
+            sendJSONResponse(res, 400, "Wrong update format")
             return;
         }
         await reserveTable(tableId)
@@ -61,7 +61,7 @@ tableRouter.patch("/admin/update", authenticatedRoute(async (req: AuthenticatedR
         const tableId = req.body.tableId
         const tableStateId = req.body.tableStateId
         if (!tableId || !tableStateId) {
-            sendJSONResponse(res, 400, "Formato de update equivocado.")
+            sendJSONResponse(res, 400, "Wrong update format")
             return;
         }
 
