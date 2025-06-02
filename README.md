@@ -10,6 +10,7 @@ Diseño del sistema:
 - Prisma ORM
 - Documentacion OpenAPI + ReDoc
 - Colección de Postman
+- TypeScript
 
 ## Setup Rapido
 
