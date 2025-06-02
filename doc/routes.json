@@ -70,8 +70,8 @@
     },
     "/menu/admin": {
       "get": {
-        "description": "Recupera el menú con la información del estado del plato.",
-        "summary": "Obtener el menú con información adicional",
+        "description": "Recupera el menú con la información del estado del plato. Solo administradores.",
+        "summary": "Obtener el menú con información adicional.",
         "parameters": [],
         "operationId": "obtenerMenuAdmin",
         "tags": ["Menú"],
@@ -150,7 +150,7 @@
     },
     "/menu/admin/post": {
       "post": {
-        "summary": "Crear un nuevo plato en el menú",
+        "summary": "Crear un nuevo plato en el menú.",
         "description": "Añade un nuevo item al menú con su nombre, descripción, precio, categoría y estado.",
         "tags": ["Menú"],
         "requestBody": {
@@ -278,8 +278,8 @@
     },
     "/menu/admin/update": {
       "patch": {
-        "summary": "Cambiar el estado de un plato en el menu",
-        "description": "Cambia el estado de un plato Stockeado a un plato Descontinuado",
+        "summary": "Cambiar el estado de un plato en el menu.",
+        "description": "Cambia el estado de un plato, por ejemplo de Stockeado a Descontinuado.",
         "tags": ["Menú"],
         "requestBody": {
           "required": true,
@@ -382,7 +382,7 @@
     },
     "/tables": {
       "get": {
-        "description": "Obtiene la lista de mesas disponibles en el restaurante",
+        "description": "Obtiene la lista de mesas disponibles en el restaurante.",
         "summary": "Obtener mesas disponibles",
         "operationId": "getAvailableTables",
         "tags": ["Mesas"],
@@ -469,7 +469,7 @@
     },
     "/tables/reserve": {
       "patch": {
-        "description": "Reserva una mesa específica en el restaurante",
+        "description": "Reserva una mesa específica en el restaurante.",
         "summary": "Reservar mesa",
         "operationId": "reserveTable",
         "tags": ["Mesas"],
@@ -553,7 +553,7 @@
     },
     "/tables/admin": {
       "get": {
-        "description": "Obtiene la lista completa de mesas del restaurante (solo para administradores)",
+        "description": "Obtiene la lista completa de mesas del restaurante (solo para administradores).",
         "summary": "Obtener todas las mesas",
         "operationId": "getAllTablesAdmin",
         "tags": ["Mesas"],
@@ -674,7 +674,7 @@
     },
     "/tables/admin/update": {
       "patch": {
-        "description": "Actualiza el estado de una mesa (solo para administradores)",
+        "description": "Actualiza el estado de una mesa (solo para administradores). Por ejemplo de reservada a libre.",
         "summary": "Actualizar estado de mesa",
         "operationId": "updateTableState",
         "tags": ["Mesas"],
@@ -798,7 +798,7 @@
     },
     "/users/post": {
       "post": {
-        "description": "Crea un nuevo usuario con su dirección asociada",
+        "description": "Crea un nuevo usuario con su dirección asociada.",
         "summary": "Registrar nuevo usuario",
         "operationId": "createUser",
         "tags": ["Usuarios"],
@@ -1149,7 +1149,7 @@
     },
     "/users/admin/{id}": {
       "get": {
-        "description": "Obtiene los detalles completos de un usuario específico (acceso solo para administradores)",
+        "description": "Obtiene los detalles completos de un usuario específico (acceso solo para administradores).",
         "summary": "Obtener usuario por ID",
         "operationId": "getUserById",
         "tags": ["Usuarios"],
@@ -1415,7 +1415,7 @@
     },
     "/orders/{id}": {
       "get": {
-        "description": "Obtiene el header y detalles de la orden especificada",
+        "description": "Obtiene el header y detalles de la orden especificada.",
         "summary": "Obtener orden por id",
         "operationId": "getOrderById",
         "tags": ["Orders"],
@@ -1622,7 +1622,7 @@
     },
     "/orders/post": {
       "post": {
-        "description": "Crea una orden bajo el nombre del usuario",
+        "description": "Crea una orden bajo el nombre del usuario.",
         "summary": "Crear orden",
         "operationId": "postOrder",
         "tags": ["Orders"],
@@ -1682,7 +1682,7 @@
 
     "/orders/add-detail": {
       "post": {
-        "description": "Agregar un item de comida bajo una orden",
+        "description": "Agregar un item de comida bajo una orden.",
         "summary": "Agregar a la lista",
         "operationId": "postOrderDetail",
         "tags": ["Orders"],
@@ -1764,7 +1764,7 @@
 
     "/orders/state/{id}": {
       "get": {
-        "description": "Accede al estado actual de una orden",
+        "description": "Accede al estado actual de una orden.",
         "summary": "Ver estado de la orden",
         "operationId": "getOrderState",
         "tags": ["Orders"],
@@ -1849,7 +1849,7 @@
 
     "/orders/update": {
       "patch": {
-        "description": "Actualizar el estado de la orden",
+        "description": "Actualizar el estado de la orden.",
         "summary": "Cambiar el estado de la orden",
         "operationId": "updateOrderState",
         "tags": ["Orders"],
