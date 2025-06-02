@@ -21,7 +21,7 @@ dishRouter.get('/', async (req: Request, res: Response) => {
 dishRouter.get('/admin', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, 'Admin access required' )
             return;
         }
         const menu = await getAdminMenu();
@@ -36,7 +36,7 @@ dishRouter.get('/admin', authenticatedRoute(async (req: AuthenticatedRequest, re
 dishRouter.post('/admin/post', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
         const name: string | undefined = req.body.name
@@ -60,7 +60,7 @@ dishRouter.post('/admin/post', authenticatedRoute(async (req: AuthenticatedReque
 dishRouter.patch('/admin/update', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
         const dishId = req.body.dishId

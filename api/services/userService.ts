@@ -85,12 +85,13 @@ export const deleteUser = async (iduser: number) => {
   })
 }
 
-export const loginUser = async (mail: string, password: string) => {
+export const loginUser = async (mail: string) => {
   return await $db.user.findFirst({
-    where: { mail: mail, password: password },
+    where: { mail: mail},
     select: {
       id: true,
       name: true,
+      password: true
     }
   })
 
