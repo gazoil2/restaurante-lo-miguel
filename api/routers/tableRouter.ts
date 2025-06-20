@@ -24,7 +24,7 @@ tableRouter.get("/admin", authenticatedRoute(async (req: AuthenticatedRequest, r
     try {
 
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
 
@@ -40,7 +40,7 @@ tableRouter.patch("/reserve", async (req: Request, res: Response) => {
     try {
         const tableId = req.body.tableId
         if (!tableId) {
-            sendJSONResponse(res, 400, "Formato de update equivocado.")
+            sendJSONResponse(res, 400, "Wrong update format")
             return;
         }
         await reserveTable(tableId)
@@ -54,14 +54,14 @@ tableRouter.patch("/reserve", async (req: Request, res: Response) => {
 tableRouter.patch("/admin/update", authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
 
         const tableId = req.body.tableId
         const tableStateId = req.body.tableStateId
         if (!tableId || !tableStateId) {
-            sendJSONResponse(res, 400, "Formato de update equivocado.")
+            sendJSONResponse(res, 400, "Wrong update format")
             return;
         }
 

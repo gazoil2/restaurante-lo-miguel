@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { verifyToken } from '../utils/jwtToken';
-import { isRequestUserAdmin } from '../utils/checkAdmin';
+import { sendJSONResponse } from '../utils/response';
 
 export interface AuthenticatedRequest extends Request {
   context: {
@@ -16,7 +16,7 @@ export const authMiddleware: RequestHandler = (req: Request, res: Response, next
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      res.status(401).json({ error: 'No token provided' });
+      sendJSONResponse(res, 401, 'No token provided')
       return;
     }
 
@@ -30,7 +30,7 @@ export const authMiddleware: RequestHandler = (req: Request, res: Response, next
 
     next();
   } catch (errouserIdr) {
-    res.status(401).json({ error: 'Invalid token' });
+    sendJSONResponse(res, 401, 'No token provided')
   }
 };
 

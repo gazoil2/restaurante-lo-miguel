@@ -1,18 +1,17 @@
 import express from "express";
 import { addOrderDetail, getAllOrders, getOrderById, getOrderDetails, getOrderState, postOrder, updateOrderState } from "../services/orderService";
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { sendJSONResponse } from '../utils/response';
-import { checkUserIsAdmin } from "../services/authService";
 import { getUserById } from "../services/userService";
 import { authMiddleware, authenticatedRoute, AuthenticatedRequest } from "./authRouter"
 export const orderRouter = express.Router();
 
-orderRouter.use('', authMiddleware)
+orderRouter.use('/admin', authMiddleware)
 
 orderRouter.get('/admin', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
         const orders = await getAllOrders();
@@ -138,7 +137,7 @@ orderRouter.patch('/request/:id', authenticatedRoute(async (req: AuthenticatedRe
 orderRouter.patch('/admin/update', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
         const { id, state } = req.body;

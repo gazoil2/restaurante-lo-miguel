@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.1",
+  "openapi": "3.0.1",
   "info": {
     "title": "API del Menú",
     "version": "1.0",
@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://api.server.test/v1"
+      "url": "http://localhost:3000"
     }
   ],
   "paths": {
@@ -16,9 +16,7 @@
         "summary": "Obtener el menú completo",
         "description": "Recupera el menú completo disponible para todos los usuarios. Devuelve un array con todos los items del menú que estén stockeados.",
         "operationId": "obtenerMenu",
-        "tags": [
-          "Menú"
-        ],
+        "tags": ["Menú"],
         "responses": {
           "200": {
             "description": "Operación exitosa",
@@ -72,13 +70,11 @@
     },
     "/menu/admin": {
       "get": {
-        "description": "Recupera el menú con la información del estado del plato.",
-        "summary": "Obtener el menú con información adicional",
+        "description": "Recupera el menú con la información del estado del plato. Solo administradores.",
+        "summary": "Obtener el menú con información adicional.",
         "parameters": [],
         "operationId": "obtenerMenuAdmin",
-        "tags": [
-          "Menú"
-        ],
+        "tags": ["Menú"],
         "responses": {
           "200": {
             "description": "OK",
@@ -154,23 +150,16 @@
     },
     "/menu/admin/post": {
       "post": {
-        "summary": "Crear un nuevo plato en el menú",
+        "summary": "Crear un nuevo plato en el menú.",
         "description": "Añade un nuevo item al menú con su nombre, descripción, precio, categoría y estado.",
-        "tags": [
-          "Menú"
-        ],
+        "tags": ["Menú"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "price",
-                  "categoryId",
-                  "dishStateId"
-                ],
+                "required": ["name", "price", "categoryId", "dishStateId"],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -289,11 +278,9 @@
     },
     "/menu/admin/update": {
       "patch": {
-        "summary": "Cambiar el estado de un plato en el menu",
-        "description": "Cambia el estado de un plato Stockeado a un plato Descontinuado",
-        "tags": [
-          "Menú"
-        ],
+        "summary": "Cambiar el estado de un plato en el menu.",
+        "description": "Cambia el estado de un plato, por ejemplo de Stockeado a Descontinuado.",
+        "tags": ["Menú"],
         "requestBody": {
           "required": true,
           "content": {
@@ -307,8 +294,7 @@
                   },
                   "dishStateId": {
                     "type": "integer",
-                    "example": 2,
-                    "$comment": "Agotado"
+                    "example": 2
                   }
                 }
               }
@@ -396,12 +382,10 @@
     },
     "/tables": {
       "get": {
-        "description": "Obtiene la lista de mesas disponibles en el restaurante",
+        "description": "Obtiene la lista de mesas disponibles en el restaurante.",
         "summary": "Obtener mesas disponibles",
         "operationId": "getAvailableTables",
-        "tags": [
-          "Mesas"
-        ],
+        "tags": ["Mesas"],
         "responses": {
           "200": {
             "description": "Lista de mesas disponibles obtenida exitosamente",
@@ -485,21 +469,17 @@
     },
     "/tables/reserve": {
       "patch": {
-        "description": "Reserva una mesa específica en el restaurante",
+        "description": "Reserva una mesa específica en el restaurante.",
         "summary": "Reservar mesa",
         "operationId": "reserveTable",
-        "tags": [
-          "Mesas"
-        ],
+        "tags": ["Mesas"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "tableId"
-                ],
+                "required": ["tableId"],
                 "properties": {
                   "tableId": {
                     "type": "integer",
@@ -573,12 +553,10 @@
     },
     "/tables/admin": {
       "get": {
-        "description": "Obtiene la lista completa de mesas del restaurante (solo para administradores)",
+        "description": "Obtiene la lista completa de mesas del restaurante (solo para administradores).",
         "summary": "Obtener todas las mesas",
         "operationId": "getAllTablesAdmin",
-        "tags": [
-          "Mesas"
-        ],
+        "tags": ["Mesas"],
         "responses": {
           "200": {
             "description": "Lista de todas las mesas obtenida exitosamente",
@@ -654,7 +632,7 @@
               }
             }
           },
-          
+
           "403": {
             "description": "Rechazado",
             "content": {
@@ -696,12 +674,10 @@
     },
     "/tables/admin/update": {
       "patch": {
-        "description": "Actualiza el estado de una mesa (solo para administradores)",
+        "description": "Actualiza el estado de una mesa (solo para administradores). Por ejemplo de reservada a libre.",
         "summary": "Actualizar estado de mesa",
         "operationId": "updateTableState",
-        "tags": [
-          "Mesas"
-        ],
+        "tags": ["Mesas"],
         "requestBody": {
           "description": "Datos necesarios para actualizar el estado de una mesa",
           "required": true,
@@ -719,10 +695,7 @@
                     "example": 1
                   }
                 },
-                "required": [
-                  "tableId",
-                  "tableStateId"
-                ]
+                "required": ["tableId", "tableStateId"]
               }
             }
           }
@@ -825,21 +798,19 @@
     },
     "/users/post": {
       "post": {
-        "description": "Crea un nuevo usuario con su dirección asociada",
+        "description": "Crea un nuevo usuario con su dirección asociada.",
         "summary": "Registrar nuevo usuario",
         "operationId": "createUser",
-        "tags": [
-          "Usuarios"
-        ],
+        "tags": ["Usuarios"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "allOf": [
-                    {
-                      "$ref": "#/components/schemas/UserData"
-                    }
+                  {
+                    "$ref": "#/components/schemas/UserData"
+                  }
                 ]
               },
 
@@ -975,14 +946,12 @@
         }
       }
     },
-    "/user/admin": {
+    "/users/register": {
       "get": {
         "description": "Obtiene todos los usuarios registrados en el sistema (acceso solo para administradores)",
         "summary": "Obtener todos los usuarios",
         "operationId": "getAllUsers",
-        "tags": [
-          "Usuarios"
-        ],
+        "tags": ["Usuarios"],
         "responses": {
           "200": {
             "description": "Lista de usuarios obtenida exitosamente",
@@ -1178,14 +1147,12 @@
         }
       }
     },
-    "/user/admin/{id}": {
+    "/users/admin/{id}": {
       "get": {
-        "description": "Obtiene los detalles completos de un usuario específico (acceso solo para administradores)",
+        "description": "Obtiene los detalles completos de un usuario específico (acceso solo para administradores).",
         "summary": "Obtener usuario por ID",
         "operationId": "getUserById",
-        "tags": [
-          "Usuarios"
-        ],
+        "tags": ["Usuarios"],
         "parameters": [
           {
             "name": "id",
@@ -1367,23 +1334,103 @@
         }
       }
     },
-
+    "/orders/request/{id}": {
+      "patch": {
+        "description": "Actualiza el estado de una orden a 'Lista para ser cocinada' si el usuario es el dueño de la orden o un administrador.",
+        "summary": "Solicitar que la orden sea cocinada",
+        "operationId": "requestOrderToBeCooked",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de la orden a actualizar",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Orden actualizada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orderId": { "type": "integer", "example": 1 },
+                    "state": {
+                      "type": "string",
+                      "example": "Lista para ser cocinada"
+                    }
+                  }
+                },
+                "example": {
+                  "orderId": 1,
+                  "state": "Lista para ser cocinada"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso denegado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Cannot access that order state (permission denied)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Internal Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/orders/{id}": {
       "get": {
-        "description": "Obtiene el header y detalles de la orden especificada",
+        "description": "Obtiene el header y detalles de la orden especificada.",
         "summary": "Obtener orden por id",
         "operationId": "getOrderById",
         "tags": ["Orders"],
-        "parameters": [{
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "ID de la orden a ver",
-          "schema": {
-            "type": "integer",
-            "example": 1
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de la orden a ver",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
           }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -1399,7 +1446,7 @@
 
                 "example": {
                   "succes": true,
-                  "data":{
+                  "data": {
                     "header": {
                       "userId": 1,
                       "id": 1,
@@ -1410,15 +1457,17 @@
                       }
                     },
 
-                    "details": [{
-                      "id": 1,
-                      "amount": 2,
-                      "total": 400,
-                      "discount": 0,
-                      "detailDish": {
-                        "name": "Rabas"
+                    "details": [
+                      {
+                        "id": 1,
+                        "amount": 2,
+                        "total": 400,
+                        "discount": 0,
+                        "detailDish": {
+                          "name": "Rabas"
+                        }
                       }
-                    }]
+                    ]
                   }
                 }
               }
@@ -1465,10 +1514,115 @@
         }
       }
     },
-
+    "/users/login": {
+      "post": {
+        "description": "Autentica a un usuario con su correo y contraseña. Devuelve un token JWT si las credenciales son válidas.",
+        "summary": "Login de usuario",
+        "operationId": "loginUser",
+        "tags": ["Usuarios"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mail": {
+                    "type": "string",
+                    "example": "usuario@email.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123"
+                  }
+                },
+                "required": ["mail", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string" },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "integer", "example": 1 },
+                        "name": { "type": "string", "example": "Juan Pérez" }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                  "user": {
+                    "id": 1,
+                    "name": "Juan Pérez"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Faltan campos obligatorios",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" },
+                "examples": {
+                  "MissingFields": {
+                    "value": {
+                      "status": false,
+                      "error": "Email and password are required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales inválidas",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" },
+                "examples": {
+                  "InvalidCredentials": {
+                    "value": {
+                      "status": false,
+                      "error": "Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" },
+                "examples": {
+                  "ServerError": {
+                    "value": {
+                      "status": false,
+                      "error": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/orders/post": {
       "post": {
-        "description": "Crea una orden bajo el nombre del usuario",
+        "description": "Crea una orden bajo el nombre del usuario.",
         "summary": "Crear orden",
         "operationId": "postOrder",
         "tags": ["Orders"],
@@ -1528,9 +1682,9 @@
 
     "/orders/add-detail": {
       "post": {
-        "description": "Agregar un item de comida bajo una orden",
+        "description": "Agregar un item de comida bajo una orden.",
         "summary": "Agregar a la lista",
-        "operationId": "postOrder",
+        "operationId": "postOrderDetail",
         "tags": ["Orders"],
         "responses": {
           "200": {
@@ -1610,20 +1764,22 @@
 
     "/orders/state/{id}": {
       "get": {
-        "description": "Accede al estado actual de una orden",
+        "description": "Accede al estado actual de una orden.",
         "summary": "Ver estado de la orden",
         "operationId": "getOrderState",
         "tags": ["Orders"],
-        "parameters": [{
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "ID de la orden a ver",
-          "schema": {
-            "type": "integer",
-            "example": 1
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de la orden a ver",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
           }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -1693,7 +1849,7 @@
 
     "/orders/update": {
       "patch": {
-        "description": "Actualizar el estado de la orden",
+        "description": "Actualizar el estado de la orden.",
         "summary": "Cambiar el estado de la orden",
         "operationId": "updateOrderState",
         "tags": ["Orders"],
@@ -1728,9 +1884,9 @@
                   "success": true,
                   "data": {
                     "updatedOrder": {
-                        "orderState": {
-                          "state": "En cocina"
-                        }
+                      "orderState": {
+                        "state": "En cocina"
+                      }
                     }
                   }
                 }
@@ -1759,12 +1915,120 @@
           }
         }
       }
+    },
+    "/orders/admin": {
+      "get": {
+        "description": "Devuelve todas las órdenes del sistema. Accesible solo para administradores.",
+        "summary": "Obtener todas las órdenes (admin)",
+        "operationId": "getAllOrdersAdmin",
+        "tags": ["Orders"],
+        "responses": {
+          "200": {
+            "description": "Lista de órdenes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "orders": [
+                    {
+                      "id": 1,
+                      "userId": 1,
+                      "total": 1400,
+                      "discount": 0,
+                      "orderState": {
+                        "state": "En cocina"
+                      },
+                      "details": [
+                        {
+                          "id": 1,
+                          "amount": 2,
+                          "total": 400,
+                          "discount": 0,
+                          "detailDish": {
+                            "name": "Rabas"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": 2,
+                      "userId": 3,
+                      "total": 2200,
+                      "discount": 10,
+                      "orderState": {
+                        "state": "Entregado"
+                      },
+                      "details": [
+                        {
+                          "id": 4,
+                          "amount": 1,
+                          "total": 1000,
+                          "discount": 0,
+                          "detailDish": {
+                            "name": "Milanesa con papas"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acceso denegado para usuarios no administradores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Admin access required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericError"
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": false,
+                      "error": "Internal Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "UserData": {
-        "type":"object",
+        "type": "object",
         "description": "Representa datos de un usuario",
         "properties": {
           "id": {
@@ -1777,17 +2041,17 @@
           "name": {
             "type": "string",
             "description": "Nombre completo del usuario",
-            "example":"Juan Pérez"
+            "example": "Juan Pérez"
           },
 
           "mail": {
-            "type":"string",
+            "type": "string",
             "description": "El email del usuario",
-            "example":"capuccinoasesino@gmail.com"
+            "example": "capuccinoasesino@gmail.com"
           },
 
           "phoneNumber": {
-            "type":"string",
+            "type": "string",
             "description": "El número de telefono del usuario",
             "example": "+5491138243537"
           },
@@ -1795,7 +2059,7 @@
           "password": {
             "type": "string",
             "description": "La contraseña del usuario",
-            "examples": ["****", "*********"]
+            "example": "*********"
           },
 
           "address": {
@@ -1812,19 +2076,19 @@
         }
       },
       "Order": {
-        "type":"object",
+        "type": "object",
         "description": "Una orden en general, cubre tanto header como details",
         "properties": {
           "header": {
             "$ref": "#/components/schemas/OrderHeader"
           },
           "details": {
-            "type":"array",
+            "type": "array",
             "description": "Una lista de detalles de la orden",
             "items": {
               "$ref": "#/components/schemas/OrderDetail"
             }
-          } 
+          }
         }
       },
       "OrderHeader": {
@@ -1841,32 +2105,31 @@
           "userId": {
             "type": "number",
             "description": "El usuario bajo el cual la orden fue creada",
-            "examples": [1, 2]
+            "example": 1
           },
-          
+
           "total": {
             "type": "number",
             "description": "El costo total de orden",
-            "examples": [400.0,  2500.0]
+            "example": 2500.0
           },
 
           "discount": {
             "type": "number",
             "description": "El descuento hecho a la orden",
-            "examples": [2500.0, 400.0]
+            "example": 400.0
           },
-
 
           "orderStateId": {
             "type": "number",
             "description": "El id de estado de la orden",
-            "examples": [1, 2, 3]
+            "example": 1
           },
 
           "orderAddressId": {
             "type": "number",
             "description": "La id de direccion asociada a la orden",
-            "examples": [1]
+            "example": 1
           }
         }
       },
@@ -1883,28 +2146,28 @@
           "orderHeaderId": {
             "type": "number",
             "description": "El id de header asociado al detalle",
-            "examples": [1, 2]
+            "example": 1
           },
 
           "dishId": {
             "type": "number",
             "description": "La id del plato asociado al detalle",
-            "examples": [1, 2]
+            "example": 1
           },
 
           "amount": {
-            "type":"number",
+            "type": "number",
             "description": "La cantidad de items del plato comprado",
-            "examples": [1, 2]
+            "example": 1
           },
 
           "total": {
-            "type":"number",
+            "type": "number",
             "description": "Total de precio por este detalle"
           },
 
           "discount": {
-            "type":"number",
+            "type": "number",
             "description": "Descuento realizado a la orden en total"
           }
         }
@@ -1943,11 +2206,7 @@
             }
           }
         },
-        "required": [
-          "id",
-          "nombre",
-          "precio"
-        ]
+        "required": ["id", "nombre", "precio"]
       },
       "GenericError": {
         "type": "object",
@@ -1963,10 +2222,7 @@
             "example": "Error interno del servidor"
           }
         },
-        "required": [
-          "status",
-          "error"
-        ]
+        "required": ["status", "error"]
       },
       "OkResponse": {
         "type": "object",
@@ -1985,9 +2241,7 @@
             }
           }
         },
-        "required": [
-          "data"
-        ]
+        "required": ["data"]
       }
     }
   }

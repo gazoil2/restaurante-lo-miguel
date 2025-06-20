@@ -1,4 +1,5 @@
 import express from 'express';
+import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { getUserById, getAllUser, postUser, loginUser } from '../services/userService';
 import { sendJSONResponse } from '../utils/response';
@@ -8,12 +9,13 @@ import { checkUserIsAdmin } from '../services/authService';
 import { authMiddleware, authenticatedRoute, AuthenticatedRequest } from './authRouter';
 export const userRouter = express.Router();
 
-userRouter.use('', authMiddleware)
+userRouter.use('/admin', authMiddleware)
 
 userRouter.get('/admin/:id', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
 
@@ -22,6 +24,7 @@ userRouter.get('/admin/:id', authenticatedRoute(async (req: AuthenticatedRequest
 
         if (!user) {
             sendJSONResponse(res, 404, "User not found")
+            return;
         }
         sendJSONResponse(res, 200, { user })
     } catch (err) {
@@ -33,7 +36,7 @@ userRouter.get('/admin/:id', authenticatedRoute(async (req: AuthenticatedRequest
 userRouter.get('/admin', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
 
@@ -50,9 +53,12 @@ userRouter.post('/register', async (req: Request, res: Response) => {
         const { name, mail, phoneNumber, password, province, city, street, number, otherDetails } = req.body
         if (!name || !mail || !phoneNumber || !password || !province || !city || !street || !number || !otherDetails) {
             sendJSONResponse(res, 400, "Bad Request")
+            return;
         }
         const newAdress = await postAddress(province, city, street, number, otherDetails)
-        const newUser = await postUser(name, mail, phoneNumber, password, newAdress.id);
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const newUser = await postUser(name, mail, phoneNumber, hashedPassword, newAdress.id);
         sendJSONResponse(res, 200, { newUser: newUser })
     } catch (err) {
         console.log(err)
@@ -65,24 +71,39 @@ userRouter.post('/login', async (req: Request, res: Response) => {
         const { mail, password } = req.body;
 
         if (!mail || !password) {
-            return sendJSONResponse(res, 400, { message: "Email and password are required" });
+            sendJSONResponse(res, 400, { message: "Email and password are required" });
+            return;
         }
 
-        const user = await loginUser(mail, password);
+        
+        const user = await loginUser(mail);
 
-        if (!user?.id) {
-            return sendJSONResponse(res, 401, { message: "Invalid credentials" });
+        
+       
+
+        if (!user) {
+            sendJSONResponse(res, 401, { message: "Invalid credentials" });
+            return;
+        }
+
+        const passwordMatches = await bcrypt.compare(password, user.password); 
+
+        if (!passwordMatches) {
+            sendJSONResponse(res, 401, { message: "Invalid credentials" });
+            return;
         }
         const isAdmin = await checkUserIsAdmin(user.id);
         const token = generateToken(user.id, isAdmin);
 
-        return sendJSONResponse(res, 200, {
+        sendJSONResponse(res, 200, {
             token: token,
-            user: user
+            user: {id: user.id, name: user.name}
         });
+        return;
 
     } catch (err) {
         console.error('Login error:', err);
-        return sendJSONResponse(res, 500, { message: "Internal server error" });
+        sendJSONResponse(res, 500, { message: "Internal server error" });
+        return;
     }
 });

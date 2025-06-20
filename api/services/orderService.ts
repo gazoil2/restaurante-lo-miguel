@@ -5,12 +5,7 @@ export const getAllOrders = async () => {
         select: {
             id: true,
             total: true,
-        },
-
-        where: {
-            orderState: {
-                state: "En cocina",
-            }
+            userId: true
         }
     })
 }

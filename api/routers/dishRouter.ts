@@ -21,7 +21,7 @@ dishRouter.get('/', async (req: Request, res: Response) => {
 dishRouter.get('/admin', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, 'Admin access required' )
             return;
         }
         const menu = await getAdminMenu();
@@ -36,7 +36,7 @@ dishRouter.get('/admin', authenticatedRoute(async (req: AuthenticatedRequest, re
 dishRouter.post('/admin/post', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
         const name: string | undefined = req.body.name
@@ -45,7 +45,7 @@ dishRouter.post('/admin/post', authenticatedRoute(async (req: AuthenticatedReque
         const categoryId: number | undefined = req.body.categoryId
         const dishStateId: number | undefined = req.body.dishStateId
         if (!name || !desc || !price || !categoryId || !dishStateId) {
-            sendJSONResponse(res, 400, "Formato de request equivocado.")
+            sendJSONResponse(res, 400, "Wrong request format")
             return;
         }
         const newDish = await postDish(name, desc, price, categoryId, dishStateId);
@@ -60,13 +60,13 @@ dishRouter.post('/admin/post', authenticatedRoute(async (req: AuthenticatedReque
 dishRouter.patch('/admin/update', authenticatedRoute(async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.context?.user?.admin) {
-            res.status(403).json({ error: 'Admin access required' });
+            sendJSONResponse(res, 403, "Admin access required")
             return;
         }
         const dishId = req.body.dishId
         const dishStateId = req.body.dishStateId
         if (!dishId || !dishStateId) {
-            sendJSONResponse(res, 400, "Formato de request equivocado.")
+            sendJSONResponse(res, 400, "Wrong request format")
             return;
         }
 

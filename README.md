@@ -2,6 +2,16 @@
 
 Una API de un restaurante que permite la reserva de mesas y ordenar comida. Ademas, permite la administracion de dicho sistema a traves de una cuenta con acceso elevado.
 
+Diseño del sistema:
+
+- Api Rest
+- Autenticación usando JWT
+- Hasheo de contraseñas
+- Prisma ORM
+- Documentacion OpenAPI + ReDoc
+- Colección de Postman
+- TypeScript
+
 ## Setup Rapido
 
 ### 1. Clonar el repositorio
@@ -26,11 +36,7 @@ Copiar la siguiente línea en el archivo:
 
 `npx prisma migrate dev --name init`
 
-### 6. Seedear la base de datos
-
-`npm run seed`
-
-### 7. Inicializar el servidor
+### 6. Inicializar el servidor
 
 `npm run dev`
 
@@ -63,8 +69,7 @@ Borra toda la informacion de la base de datos.
     - [3. Crear un archivo .env](#3-crear-un-archivo-env)
     - [4. Generar el cliente Prisma](#4-generar-el-cliente-prisma)
     - [5. Aplicar los cambios del esquema a la base de datos](#5-aplicar-los-cambios-del-esquema-a-la-base-de-datos)
-    - [6. Seedear la base de datos](#6-seedear-la-base-de-datos)
-    - [7. Inicializar el servidor](#7-inicializar-el-servidor)
+    - [6. Inicializar el servidor](#6-inicializar-el-servidor)
     - [Comandos Utiles](#comandos-utiles)
   - [Información sobre la API](#información-sobre-la-api)
   - [Integrantes](#integrantes)
